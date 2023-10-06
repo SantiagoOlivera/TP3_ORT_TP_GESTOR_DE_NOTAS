@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navgraph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_administradorActivity"
+            app:destination="@id/administradorActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_estudianteActivity"
+            app:destination="@id/estudianteActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <argument
+            android:name="usuario"
+            app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario" />
+    </fragment>
+    <activity
+        android:id="@+id/administradorActivity"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.AdministradorActivity"
+        android:label="activity_administrador"
+        tools:layout="@layout/activity_administrador" >
+        <argument
+            android:name="usuario"
+            app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario" />
+    </activity>
+    <activity
+        android:id="@+id/estudianteActivity"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.EstudianteActivity"
+        android:label="activity_estudiante"
+        tools:layout="@layout/activity_estudiante" >
+        <argument
+            android:name="usuario"
+            app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario" />
+    </activity>
+</navigation>
