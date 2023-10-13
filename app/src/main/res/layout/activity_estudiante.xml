@@ -12,7 +12,7 @@
         android:layout_width="409dp"
         android:layout_height="729dp"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/app_navgraph"
+        app:navGraph="@navigation/estudiante_navgraph"
         tools:layout_editor_absoluteX="2dp"
         tools:layout_editor_absoluteY="1dp" />
 

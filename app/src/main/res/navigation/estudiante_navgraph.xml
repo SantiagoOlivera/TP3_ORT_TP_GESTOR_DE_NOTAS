@@ -2,4 +2,34 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/estudiante_navgraph" />
+    android:id="@+id/estudiante_navgraph"
+    app:startDestination="@id/inicioFragment">
+    <fragment
+    android:id="@+id/inicioFragment"
+    android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.InicioFragment"
+    android:label="fragment_inicio"
+    tools:layout="@layout/fragment_inicio" />
+    <fragment
+    android:id="@+id/usuarioFragment"
+    android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.UsuarioFragment"
+    android:label="fragment_usuario"
+    tools:layout="@layout/fragment_usuario" />
+    <fragment
+    android:id="@+id/estudianteMateriaListFragment"
+    android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria.EstudianteMateriaListFragment"
+    android:label="fragment_estudiante_materia_list"
+    tools:layout="@layout/fragment_estudiante_materia_list" >
+        <action
+            android:id="@+id/action_estudianteMateriaListFragment_to_estudianteMateriaFragment"
+            app:destination="@id/estudianteMateriaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/estudianteMateriaFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria.EstudianteMateriaFragment"
+        android:label="fragment_estudiante_materia"
+        tools:layout="@layout/fragment_estudiante_materia" >
+        <argument
+            android:name="estudianteMateria"
+            app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria" />
+    </fragment>
+</navigation>

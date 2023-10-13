@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstadoMateria
@@ -12,7 +13,8 @@ import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
 
 class EstudianteMateriaAdapter(
-    var materias: MutableList<EstudianteMateria>
+    var materias: MutableList<EstudianteMateria>,
+    var onClick: (Int) -> Unit
 ) : RecyclerView.Adapter<EstudianteMateriaAdapter.EstudianteMateriaHolder>() {
     class EstudianteMateriaHolder(v: View): RecyclerView.ViewHolder(v){
         private var view: View;
@@ -53,6 +55,11 @@ class EstudianteMateriaAdapter(
             txtEstadoMateria.setTextColor(color);
         }
 
+        fun getCard(): CardView {
+            val c: CardView = this.view.findViewById(R.id.cardViewEstudianteMateriaList);
+            return c;
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EstudianteMateriaHolder {
@@ -69,6 +76,9 @@ class EstudianteMateriaAdapter(
         holder.setNombreMateria(this.materias[position].getMateria().getNombre());
         holder.setNota(this.materias[position].getNota());
         holder.setEstadoMateria(this.materias[position].getEstado());
+        holder.getCard().setOnClickListener{
+            onClick(position);
+        }
     }
 
 }

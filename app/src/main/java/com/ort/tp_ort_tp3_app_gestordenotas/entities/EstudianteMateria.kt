@@ -1,20 +1,24 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.entities
 
-class EstudianteMateria {
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+class EstudianteMateria() : Parcelable {
 
     private lateinit var estudiante: Estudiante
     private lateinit var materia: Materia
     private lateinit var estado: EstadoMateria
     private var nota: Int = 0
 
-    constructor(estudiante: Estudiante, materia: Materia){
+    constructor(estudiante: Estudiante, materia: Materia): this() {
         this.setEstudiante(estudiante);
         this.setMateria(materia);
         this.setEstado(EstadoMateria.PENDIENTE);
         this.setNota(0);
     }
 
-    constructor(e: Estudiante,m: Materia, estado: EstadoMateria, nota: Int){
+    constructor(e: Estudiante,m: Materia, estado: EstadoMateria, nota: Int): this() {
         this.setEstudiante(e);
         this.setMateria(m);
         this.setEstado(estado);

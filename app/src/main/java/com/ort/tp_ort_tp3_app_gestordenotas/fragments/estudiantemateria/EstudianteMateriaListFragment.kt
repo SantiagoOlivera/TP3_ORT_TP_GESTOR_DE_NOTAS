@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.adapters.EstudianteMateriaAdapter
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
@@ -47,21 +49,27 @@ class EstudianteMateriaListFragment : Fragment() {
 
         var e: Estudiante = this.usuario as Estudiante;
 
-        this.adapter = EstudianteMateriaAdapter( e.getListEstudianteMateria() );
-        //{ i ->
-        //Snackbar.make(v, "Click en ${ repository.getProducts()[position].getName() }", Snackbar.LENGTH_LONG).show();
-        //val action = ProductsListFragmentDirections.actionProductsListFragment2ToProductFragment(this.products[i]);
-        //findNavController().navigate(action);
-        //}
+        this.adapter = EstudianteMateriaAdapter(
+            e.getListEstudianteMateria(),
+            { i ->
+                Snackbar.make(v, "Click", Snackbar.LENGTH_LONG).show();
+                val action = EstudianteMateriaListFragmentDirections.actionEstudianteMateriaListFragmentToEstudianteMateriaFragment(e.getListEstudianteMateria()[i]);
+                findNavController().navigate(action);
+            }
+        );
+
         this.recycler.layoutManager = LinearLayoutManager(context);
         this.recycler.adapter = this.adapter;
 
     }
+
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(EstudianteMateriaListViewModel::class.java)
         // TODO: Use the ViewModel
     }
+
 
 }
