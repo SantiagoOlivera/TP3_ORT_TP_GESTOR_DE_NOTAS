@@ -13,12 +13,8 @@ import java.util.Date
 class UsuariosRepository {
 
     companion object{
-        fun getUsuarios(): MutableList<Usuario>{
-
-            var ret: MutableList<Usuario> = mutableListOf();
-
-            //Materias
-            var materias: MutableList<Materia> = getMaterias();
+        fun getPersonas():MutableList<Persona>{
+            var ret: MutableList<Persona> = mutableListOf();
 
             //Persona 1
             var p1: Persona = Persona(
@@ -36,10 +32,23 @@ class UsuariosRepository {
                 Date(1980,12,31)
             )
 
+            ret.add(p1);
+            ret.add(p2);
+
+            return ret;
+        }
+
+        fun getUsuarios(): MutableList<Usuario>{
+
+            var ret: MutableList<Usuario> = mutableListOf();
+            //Materias
+            var materias: MutableList<Materia> = getMaterias();
+            //Personas
+            var personas: MutableList<Persona> = getPersonas();
 
 
-            var u1: Estudiante = Estudiante("USER1", "user1@text.com", "123", p1);
-            var u2: Usuario = Administrador("ADMIN1", "admin1@text.com", "123", p2);
+            var u1: Estudiante = Estudiante("USER1", "user1@text.com", "123", personas[0]);
+            var u2: Usuario = Administrador("ADMIN1", "admin1@text.com", "123", personas[1]);
 
 
             for (m: Materia in materias){
@@ -48,6 +57,18 @@ class UsuariosRepository {
 
             ret.add(u1);
             ret.add(u2);
+
+            return ret;
+        }
+
+        fun getEstudiantes():MutableList<Estudiante> {
+            var ret: MutableList<Estudiante> = mutableListOf();
+            //Estudiantes
+            var estudiantes: List<Usuario> = getUsuarios().filter { e -> e is Estudiante };
+
+            if(estudiantes.count() > 0){
+                ret = estudiantes as MutableList<Estudiante>;
+            }
 
             return ret;
         }

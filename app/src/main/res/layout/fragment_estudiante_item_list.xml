@@ -14,43 +14,29 @@
         android:padding="7dp">
 
         <TextView
-            android:id="@+id/txtNombreMateria"
+            android:id="@+id/txtNombreCompleto"
             android:layout_width="395dp"
             android:layout_height="25dp"
             android:layout_marginTop="4dp"
-            android:text="Nombre materia"
+            android:text="Nombre completo estudiante"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtNota"
+            android:id="@+id/txtDNI"
             android:layout_width="0dp"
             android:layout_height="21dp"
-            android:layout_marginTop="32dp"
-            android:text="Nota"
+            android:layout_marginBottom="40dp"
+            android:height="21dp"
+            android:text="DNI"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtNombreMateria"
-            app:layout_constraintVertical_bias="0.833" />
-
-        <TextView
-            android:id="@+id/txtEstado"
-            android:layout_width="0dp"
-            android:layout_height="21dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="12dp"
-            android:height="21dp"
-            android:text="Estado"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/txtNota"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtNombreMateria"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/txtNombreCompleto"
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

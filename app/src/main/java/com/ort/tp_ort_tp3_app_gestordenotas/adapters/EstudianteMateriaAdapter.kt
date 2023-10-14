@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstadoMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
-import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
 
 class EstudianteMateriaAdapter(
     var materias: MutableList<EstudianteMateria>,
@@ -33,7 +32,7 @@ class EstudianteMateriaAdapter(
         }
 
         fun setEstadoMateria(estado: EstadoMateria){
-            var txtEstadoMateria: TextView = view.findViewById(R.id.txtEstadoMateria);
+            var txtEstadoMateria: TextView = view.findViewById(R.id.txtEstado);
             var text: String = "";
             var color: Int = Color.BLACK;
 
@@ -56,7 +55,7 @@ class EstudianteMateriaAdapter(
         }
 
         fun getCard(): CardView {
-            val c: CardView = this.view.findViewById(R.id.cardViewEstudianteMateriaList);
+            val c: CardView = this.view.findViewById(R.id.cardViewEstudianteList);
             return c;
         }
 

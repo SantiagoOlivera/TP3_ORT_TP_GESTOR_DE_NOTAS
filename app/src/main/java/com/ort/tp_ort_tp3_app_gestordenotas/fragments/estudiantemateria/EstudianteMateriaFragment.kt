@@ -13,12 +13,13 @@ import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 class EstudianteMateriaFragment : Fragment() {
 
     lateinit var txtNombreMateria: TextView
+    private lateinit var v: View;
 
     companion object {
         fun newInstance() = EstudianteMateriaFragment()
     }
 
-    private lateinit var v: View;
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

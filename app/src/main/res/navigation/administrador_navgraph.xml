@@ -3,16 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/administrador_navgraph"
-    app:startDestination="@id/inicioFragment">
+    app:startDestination="@id/inicioAdministradorPageFragment">
 
-    <fragment
-        android:id="@+id/inicioFragment"
-        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.InicioFragment"
-        android:label="fragment_inicio"
-        tools:layout="@layout/fragment_inicio" />
     <fragment
         android:id="@+id/usuarioFragment"
         android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.UsuarioFragment"
         android:label="fragment_usuario"
         tools:layout="@layout/fragment_usuario" />
+    <fragment
+        android:id="@+id/estudianteListFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.EstudianteListFragment"
+        android:label="fragment_estudiante_list"
+        tools:layout="@layout/fragment_estudiante_list" >
+        <action
+            android:id="@+id/action_estudianteListFragment_to_estudianteFragment"
+            app:destination="@id/estudianteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/estudianteFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.EstudianteFragment"
+        android:label="fragment_estudiante"
+        tools:layout="@layout/fragment_estudiante" >
+        <argument
+            android:name="estudiante"
+            app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante" />
+    </fragment>
+    <fragment
+        android:id="@+id/inicioAdministradorPageFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.pages.InicioAdministradorPageFragment"
+        android:label="fragment_inicio_administrador_page"
+        tools:layout="@layout/fragment_inicio_administrador_page" >
+        <action
+            android:id="@+id/action_inicioAdministradorPageFragment_to_estudianteListFragment"
+            app:destination="@id/estudianteListFragment" />
+    </fragment>
 </navigation>
