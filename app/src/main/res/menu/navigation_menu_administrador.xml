@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/estudianteListFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="Estudiantes"
+            />
+        <item
+            android:id="@+id/usuarioFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="Agregar estudiante"
+            />
+    </group>
+</menu>

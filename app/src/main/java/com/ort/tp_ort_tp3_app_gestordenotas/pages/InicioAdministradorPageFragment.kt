@@ -51,8 +51,8 @@ class InicioAdministradorPageFragment : Fragment() {
         super.onStart();
         this.btnVerEstudiantes.setOnClickListener {
             Snackbar.make(this.v, "Click", Snackbar.LENGTH_LONG).show();
-            val action = InicioAdministradorPageFragmentDirections.actionInicioAdministradorPageFragmentToEstudianteListFragment();
-            findNavController().navigate(action);
+            //val action = InicioAdministradorPageFragmentDirections.actionInicioAdministradorPageFragmentToEstudianteListFragment();
+            //findNavController().navigate(action);
         }
     }
 
