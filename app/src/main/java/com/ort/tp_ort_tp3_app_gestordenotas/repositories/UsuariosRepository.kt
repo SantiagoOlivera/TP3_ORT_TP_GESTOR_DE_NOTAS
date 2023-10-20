@@ -1,5 +1,9 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.repositories
 
+import android.content.ContentValues.TAG
+import android.util.Log
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Administrador
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstadoMateria
@@ -13,6 +17,7 @@ import java.util.Date
 class UsuariosRepository {
 
     companion object{
+
         fun getPersonas():MutableList<Persona>{
             var ret: MutableList<Persona> = mutableListOf();
 
@@ -104,11 +109,13 @@ class UsuariosRepository {
                 Materia("CS","Calidad de Software","", AnioMateria.SEGUNDO_ANIO_SEGUNDO_CUATRIMESTRE),
                 Materia("EJ","Estudios Judaicos","", AnioMateria.SEGUNDO_ANIO_SEGUNDO_CUATRIMESTRE),
             );
-
             return ret;
         }
 
         fun login(usuarioOEmail: String, password: String): Usuario? {
+
+            test();
+            getMaterias();
 
             var usuarios: MutableList<Usuario> = getUsuarios();
 
@@ -118,6 +125,32 @@ class UsuariosRepository {
             };
 
             return u;
+        }
+
+        fun test(){
+            //val db = Firebase.firestore
+            val db = Firebase.firestore
+            db.collection("test")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        Log.d(TAG, "test ----- ID: ${document.id} ---DATA:${document.data}")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents.", exception)
+                }
+
+            db.collection("Personas")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        Log.d(TAG, "test ----- ID: ${document.id} ---DATA:${document.data}")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents.", exception)
+                }
         }
     }
 }
