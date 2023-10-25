@@ -1,12 +1,18 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.entities
 
-import android.media.Image
-import java.util.Date
-
 class Estudiante : Usuario {
 
     private lateinit var materias: MutableList<EstudianteMateria>
     private var promedioMaterias: Double = 0.0
+
+    constructor(
+        usuario: String,
+        email: String,
+        password: String,
+        idPersona: String
+    ) : super(usuario, email, password, idPersona) {
+        this.initMaterias();
+    }
 
     constructor(
         usuario: String,

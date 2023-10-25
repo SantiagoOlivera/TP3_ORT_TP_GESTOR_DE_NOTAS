@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import com.ort.tp_ort_tp3_app_gestordenotas.EstudianteActivity
 import com.ort.tp_ort_tp3_app_gestordenotas.R
+import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +25,13 @@ class UsuarioFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+
+    private lateinit var v: View;
+    private lateinit var txtEmail: TextView;
+    private lateinit var txtDNI: TextView;
+    private lateinit var txtUsuario: TextView;
+    private lateinit var txtNombreCompleto: TextView;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,8 +45,33 @@ class UsuarioFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_usuario, container, false)
+        this.v = inflater.inflate(R.layout.fragment_usuario, container, false);
+
+        this.txtEmail = this.v.findViewById(R.id.txtEmail);
+        this.txtNombreCompleto = this.v.findViewById(R.id.txtNombreCompleto);
+        this.txtUsuario = this.v.findViewById(R.id.txtUsuario);
+        this.txtDNI = this.v.findViewById(R.id.txtDNI);
+
+
+        return this.v;
     }
+
+    override fun onStart() {
+        super.onStart();
+
+        val estudianteActivity: EstudianteActivity = parentFragment?.activity as EstudianteActivity;
+        val e: Estudiante = estudianteActivity.getEstudiante();
+
+        this.txtUsuario.text = e?.getUsuario();
+        this.txtEmail.text = e?.getEmail();
+        this.txtNombreCompleto.text = e?.getPersona()?.getNombreCompleto();
+        this.txtDNI.text = e?.getPersona()?.getDNI();
+
+
+    }
+
+
+
 
     companion object {
         /**

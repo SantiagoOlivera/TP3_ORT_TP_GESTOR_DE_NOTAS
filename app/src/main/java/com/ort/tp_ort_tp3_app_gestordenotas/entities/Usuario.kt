@@ -2,6 +2,7 @@ package com.ort.tp_ort_tp3_app_gestordenotas.entities
 
 import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -10,7 +11,20 @@ open class Usuario() : Parcelable {
     private lateinit var usuario: String
     private lateinit var email: String
     private lateinit var password: String
+    private lateinit var idPersona: String
     private lateinit var persona: Persona
+
+    constructor(
+        usuario: String,
+        email: String,
+        password: String,
+        idPersona: String
+    ) : this() {
+        this.setUsuario(usuario);
+        this.setEmail(email);
+        this.setPassword(password);
+        this.setIdPersona(idPersona);
+    }
 
     constructor(
         usuario: String,
@@ -41,6 +55,11 @@ open class Usuario() : Parcelable {
         return this.persona;
     }
 
+    fun getIdPersona(): String {
+        return this.idPersona;
+    }
+
+
     private fun setUsuario(usuario: String){
         this.usuario =usuario;
     }
@@ -50,10 +69,12 @@ open class Usuario() : Parcelable {
     private fun setPassword(password: String){
         this.password = password;
     }
-    private fun setPersona(persona: Persona){
+    public fun setPersona(persona: Persona){
         this.persona = persona;
     }
 
-
+    private fun setIdPersona(idPersona: String){
+        this.idPersona = idPersona;
+    }
 
 }
