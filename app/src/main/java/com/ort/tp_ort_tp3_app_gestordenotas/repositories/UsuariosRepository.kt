@@ -57,7 +57,7 @@ class UsuariosRepository {
 
 
             for (m: Materia in materias){
-                u1.agregarEstudianteMateria(EstudianteMateria(u1, m, EstadoMateria.PENDIENTE, 0));
+                u1.agregarEstudianteMateria(EstudianteMateria("", EstadoMateria.PENDIENTE, 0));
             }
 
             ret.add(u1);

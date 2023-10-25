@@ -1,5 +1,6 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.fragments
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Administrador
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
+import com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.UsuarioFragment
 import com.ort.tp_ort_tp3_app_gestordenotas.repositories.UsuariosRepository
 
 class LoginFragment : Fragment() {
@@ -66,6 +68,10 @@ class LoginFragment : Fragment() {
                     val action = LoginFragmentDirections.actionLoginFragmentToAdministradorActivity(u);
                     findNavController().navigate(action);
                 }
+
+                val intent = Intent(activity, UsuarioFragment::class.java)
+                intent.putExtra("nombreUsuarioOEmail", usuarioOEmail)
+                startActivity(intent)
             }else{
                 //this.v.hideKeyboard();
                 Snackbar.make(this.v, USUARIO_INVALIDO, Snackbar.LENGTH_LONG).show();
