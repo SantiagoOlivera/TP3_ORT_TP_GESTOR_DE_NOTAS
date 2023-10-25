@@ -9,14 +9,14 @@
     android:layout_margin="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="410dp"
+        android:layout_height="104dp"
         android:padding="7dp">
 
         <TextView
             android:id="@+id/txtNombreMateria"
-            android:layout_width="395dp"
-            android:layout_height="25dp"
+            android:layout_width="394dp"
+            android:layout_height="33dp"
             android:layout_marginTop="4dp"
             android:text="Nombre materia"
             android:textSize="20sp"
@@ -27,30 +27,44 @@
 
         <TextView
             android:id="@+id/txtNota"
-            android:layout_width="0dp"
-            android:layout_height="21dp"
-            android:layout_marginTop="32dp"
+            android:layout_width="72dp"
+            android:layout_height="44dp"
             android:text="Nota"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtNombreMateria"
-            app:layout_constraintVertical_bias="0.833" />
+            app:layout_constraintHorizontal_bias="0.214"
+            app:layout_constraintStart_toEndOf="@+id/txtEstado"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/txtEstado"
-            android:layout_width="0dp"
-            android:layout_height="21dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="12dp"
+            android:layout_width="233dp"
+            android:layout_height="25dp"
             android:height="21dp"
             android:text="Estado"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/txtNota"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtNombreMateria"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.542" />
+
+        <ImageButton
+            android:id="@+id/idBtnMateria"
+            android:layout_width="45dp"
+            android:layout_height="44dp"
+            android:backgroundTint="#FFFFFF"
+            android:clickable="true"
+            android:contentDescription="abrir seleccion de opciones"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.727"
+            app:layout_constraintStart_toEndOf="@+id/txtNota"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.883"
+            app:srcCompat="@drawable/images" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

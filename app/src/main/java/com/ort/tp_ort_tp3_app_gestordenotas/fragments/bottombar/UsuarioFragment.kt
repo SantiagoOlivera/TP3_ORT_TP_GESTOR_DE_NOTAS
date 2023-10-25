@@ -1,11 +1,20 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ort.tp_ort_tp3_app_gestordenotas.R
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.ort.tp_ort_tp3_app_gestordenotas.adapters.UsuarioMateriasAdapter
+import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +30,11 @@ class UsuarioFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var v: View;
+    private lateinit var nombreCompleto: TextView
+    private lateinit var email: TextView
+    private lateinit var dni: TextView
+    private lateinit var lista: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +49,53 @@ class UsuarioFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_usuario, container, false)
+        v = inflater.inflate(R.layout.fragment_usuario, container, false)
+        nombreCompleto = v.findViewById(R.id.NombreUsuario)
+        email = v.findViewById(R.id.emailId)
+        dni = v.findViewById(R.id.dniId)
+        lista = v.findViewById(R.id.materiasPerfil)
+        return v
     }
+
+    override fun onStart() {
+        super.onStart()
+        val db = Firebase.firestore
+        val nombreUsuario = arguments?.getString("nombreUsuarioOEmail")
+        val alumnosCollection = db.collection("alumnos")
+
+        alumnosCollection.whereEqualTo("usuario", nombreUsuario)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result){
+                    if(result.isEmpty){
+                        Log.e("Error de Firestore", "no se pudo acceder a la base de datos")
+                    }else {
+                        val id = document.id
+                        val nombreCompleto = document.getString("usuario").toString()
+                        this.nombreCompleto.text = nombreCompleto
+                        val dni = document.getString("dni").toString()
+                        this.dni.text = dni
+                        val email = document.getString("email").toString()
+                        this.email.text = email
+                        val materias = document.get("materiasInscriptas") as MutableList<EstudianteMateria>
+                        val adapter = UsuarioMateriasAdapter(materias)
+                        lista.adapter = adapter
+                        lista.layoutManager = LinearLayoutManager(context)
+                        adapter.actualizarDatos(materias)
+
+
+                    }
+                }
+            }
+            .addOnFailureListener{exception->
+                Log.e("Error de Firestore", "no se puedo acceder a la base de datos")
+            }
+
+
+    }
+
+
+
 
     companion object {
         /**

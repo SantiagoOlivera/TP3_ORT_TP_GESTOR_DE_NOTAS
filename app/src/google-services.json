@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "355673466785",
+    "project_id": "tp-tp3",
+    "storage_bucket": "tp-tp3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355673466785:android:6bb0b0cf8bdc926ef24de0",
+        "android_client_info": {
+          "package_name": "com.example.trabajo_practico"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdmuVjIOoWsFaOCsrBfO_o1tbnc6Gc_54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355673466785:android:9ce5fee9add7761bf24de0",
+        "android_client_info": {
+          "package_name": "com.ort.tp_ort_tp3_app_gestordenotas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdmuVjIOoWsFaOCsrBfO_o1tbnc6Gc_54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,19 +8,19 @@ class EstudianteMateria() : Parcelable {
 
     private lateinit var estudiante: Estudiante
     private lateinit var materia: Materia
+    private lateinit var nombreMateria: String
     private lateinit var estado: EstadoMateria
     private var nota: Int = 0
 
-    constructor(estudiante: Estudiante, materia: Materia): this() {
+    /*constructor(estudiante: Estudiante, materia: Materia): this() {
         this.setEstudiante(estudiante);
         this.setMateria(materia);
         this.setEstado(EstadoMateria.PENDIENTE);
         this.setNota(0);
-    }
+    }*/
 
-    constructor(e: Estudiante,m: Materia, estado: EstadoMateria, nota: Int): this() {
-        this.setEstudiante(e);
-        this.setMateria(m);
+    constructor(nombreMateria: String, estado: EstadoMateria, nota: Int): this() {
+        this.setNombreMateria(nombreMateria)
         this.setEstado(estado);
         this.setNota(nota);
     }
@@ -41,6 +41,10 @@ class EstudianteMateria() : Parcelable {
         return this.estado;
     }
 
+    fun getNombreMateria(): String{
+        return this.nombreMateria
+    }
+
     private fun setNota(nota: Int){
         this.nota = nota;
     }
@@ -54,6 +58,10 @@ class EstudianteMateria() : Parcelable {
     }
     private fun setEstudiante(estudiante: Estudiante){
         this.estudiante = estudiante;
+    }
+
+    private fun setNombreMateria(nombre: String){
+        this.nombreMateria = nombre
     }
 
 
