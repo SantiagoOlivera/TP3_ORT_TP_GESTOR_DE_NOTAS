@@ -4,5 +4,7 @@ enum class EstadoMateria {
     PENDIENTE,
     FINAL,
     APROBADA,
-    EN_PROGRESO
+    EN_PROGRESO;
+
+
 }

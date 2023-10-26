@@ -14,6 +14,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
+import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstadoMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Materia
@@ -95,6 +96,9 @@ class EstudianteActivity : AppCompatActivity() {
                             for(document in result) {
 
                                 var idMateria: String = document.get("idMateria") as String;
+                                var estado: EstadoMateria = EstadoMateria.entries.get((document.get("estado") as Number).toInt());
+                                var nota: Int = ( document.get("nota") as Number ).toInt();
+
                                 Snackbar.make(this.v, "PersonaMateria: ${idMateria}", Snackbar.LENGTH_LONG).show();
 
                                 db.collection("Materias")
@@ -106,11 +110,12 @@ class EstudianteActivity : AppCompatActivity() {
 
                                         var descripcion: String =  materia.get("descripcion") as String;
                                         var nombre: String =  materia.get("nombre") as String;
-                                        var anioMateria: AnioMateria = AnioMateria.PRIMER_ANIO_PRIMER_CUATRIMESTRE;
-                                            //.values().first { it.ordinal == materia.get("anioMateria") as Number }
+                                        var anioMateria: AnioMateria = AnioMateria.entries.get((materia.get("anioMateria") as Number).toInt());
+
 
                                         var m: Materia = Materia(idMateria, nombre, descripcion, anioMateria);
-                                        var em: EstudianteMateria = EstudianteMateria(this.estudiante, m);
+                                        var em: EstudianteMateria = EstudianteMateria(this.estudiante, m, estado, nota);
+
 
                                         this.estudiante.agregarEstudianteMateria(em);
                                     }
