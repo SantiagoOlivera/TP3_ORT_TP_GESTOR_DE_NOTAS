@@ -7,6 +7,13 @@ class Administrador : Usuario {
         usuario: String,
         email: String,
         password: String,
+        idPersona: String
+    ) : super(usuario, email, password, idPersona) {
+    }
+    constructor(
+        usuario: String,
+        email: String,
+        password: String,
         persona: Persona
     ) : super(usuario, email, password, persona) {
     }

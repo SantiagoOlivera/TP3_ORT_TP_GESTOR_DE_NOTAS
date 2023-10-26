@@ -66,10 +66,10 @@ class UsuarioFragment : Fragment() {
         alumnosCollection.whereEqualTo("usuario", nombreUsuario)
             .get()
             .addOnSuccessListener { result ->
-                for (document in result){
-                    if(result.isEmpty){
+                for (document in result) {
+                    if (result.isEmpty) {
                         Log.e("Error de Firestore", "no se pudo acceder a la base de datos")
-                    }else {
+                    } else {
                         val id = document.id
                         val nombreCompleto = document.getString("usuario").toString()
                         this.nombreCompleto.text = nombreCompleto
@@ -87,15 +87,12 @@ class UsuarioFragment : Fragment() {
                     }
                 }
             }
-            .addOnFailureListener{exception->
+            .addOnFailureListener { exception ->
                 Log.e("Error de Firestore", "no se puedo acceder a la base de datos")
             }
 
 
     }
-
-
-
 
     companion object {
         /**

@@ -5,11 +5,26 @@ import java.util.Date
 
 class Persona {
 
+    private lateinit var idPersona:String
     private lateinit var dni: String
     private lateinit var nombre: String
     private lateinit var apellido: String
     private lateinit var fechaDeNacimiento: Date
     private lateinit var imagen: Image
+
+    constructor(
+        idPersona: String,
+        dni: String,
+        nombre: String,
+        apellido: String,
+        fechaDeNacimiento: Date,
+    ){
+        this.setIdPersona(idPersona);
+        this.setDNI(dni);
+        this.setNombre(nombre);
+        this.setApellido(apellido);
+        this.setFechaDeNacimiento(fechaDeNacimiento);
+    }
 
     constructor(
         dni: String,
@@ -35,6 +50,13 @@ class Persona {
     }
     fun getApellido(): String{
         return this.apellido;
+    }
+    fun getIdPersona(): String{
+        return this.idPersona;
+    }
+
+    private fun setIdPersona(idPersona: String){
+        this.idPersona = idPersona;
     }
 
     private fun setImagen(imagen: Image){

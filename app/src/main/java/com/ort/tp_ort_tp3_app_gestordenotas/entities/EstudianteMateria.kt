@@ -12,12 +12,12 @@ class EstudianteMateria() : Parcelable {
     private lateinit var estado: EstadoMateria
     private var nota: Int = 0
 
-    /*constructor(estudiante: Estudiante, materia: Materia): this() {
+    constructor(estudiante: Estudiante, materia: Materia): this() {
         this.setEstudiante(estudiante);
         this.setMateria(materia);
         this.setEstado(EstadoMateria.PENDIENTE);
         this.setNota(0);
-    }*/
+    }
 
     constructor(nombreMateria: String, estado: EstadoMateria, nota: Int): this() {
         this.setNombreMateria(nombreMateria)

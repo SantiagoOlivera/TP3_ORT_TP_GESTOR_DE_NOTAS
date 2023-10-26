@@ -8,7 +8,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.ort.tp_ort_tp3_app_gestordenotas.EstudianteActivityArgs
 import com.ort.tp_ort_tp3_app_gestordenotas.R
+import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
+import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
+import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
+import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria.EstudianteMateriaFragmentArgs
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.EstudianteListFragmentDirections
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,6 +52,9 @@ class InicioFragment : Fragment() {
 
     override fun onStart() {
         super.onStart();
+
+        //val u: Usuario = EstudianteActivityArgs.fromBundle(requireArguments()).usuario;
+        //Snackbar.make(this.v, "Estudiante: ${e.getPersona().getNombreCompleto()}", Snackbar.LENGTH_LONG).show();
     }
 
     companion object {

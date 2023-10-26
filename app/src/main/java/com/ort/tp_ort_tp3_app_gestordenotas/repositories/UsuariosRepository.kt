@@ -114,8 +114,8 @@ class UsuariosRepository {
 
         fun login(usuarioOEmail: String, password: String): Usuario? {
 
-            test();
-            getMaterias();
+            //test();
+            //getMaterias();
 
             var usuarios: MutableList<Usuario> = getUsuarios();
 
@@ -142,6 +142,17 @@ class UsuariosRepository {
                 }
 
             db.collection("Personas")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        Log.d(TAG, "test ----- ID: ${document.id} ---DATA:${document.data}")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents.", exception)
+                }
+
+            db.collection("Usuarios")
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {

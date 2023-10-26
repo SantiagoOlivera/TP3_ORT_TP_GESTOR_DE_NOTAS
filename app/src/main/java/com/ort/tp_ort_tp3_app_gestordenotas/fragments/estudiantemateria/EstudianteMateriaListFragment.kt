@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.ort.tp_ort_tp3_app_gestordenotas.EstudianteActivity
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.adapters.EstudianteMateriaAdapter
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
@@ -36,8 +37,10 @@ class EstudianteMateriaListFragment : Fragment() {
         this.v = inflater.inflate(R.layout.fragment_estudiante_materia_list, container, false);
         this.recycler = v.findViewById(R.id.RecyclerViewEstudianteMateriaList);
 
-        var usuarios: List<Usuario> = UsuariosRepository.getUsuarios();
-        this.usuario = usuarios[0];
+        //var usuarios: List<Usuario> = UsuariosRepository.getUsuarios();
+        val estudianteActivity: EstudianteActivity = parentFragment?.activity as EstudianteActivity;
+        val e: Estudiante = estudianteActivity.getEstudiante();
+        this.usuario = e;
 
         return this.v;
 
