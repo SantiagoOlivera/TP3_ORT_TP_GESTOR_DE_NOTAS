@@ -28,7 +28,6 @@ import com.ort.tp_ort_tp3_app_gestordenotas.entities.Rol
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.UsuarioFragment
 import com.ort.tp_ort_tp3_app_gestordenotas.repositories.UsuariosRepository
-import java.io.Serializable
 import java.util.Date
 
 
@@ -62,6 +61,7 @@ class LoginFragment : Fragment() {
 
     override fun onStart(){
         super.onStart()
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         btnLogin.setOnClickListener {
             val db = Firebase.firestore
@@ -88,6 +88,9 @@ class LoginFragment : Fragment() {
                     var password: String = document.data.get("password") as String;
                     var idPersona: String = document.data.get("idPersona") as String;
                     var rol: Int = ( document.data.get("rol") as Number ).toInt();
+
+                    viewModel.usuario = usuario
+                    viewModel.email = email
 
                     //Snackbar.make(this.v, "ROL:${rol}, ESTUDIANTE: ${Rol.ESTUDIANTE.ordinal}", Snackbar.LENGTH_LONG).show();
                     if(rol === Rol.ESTUDIANTE.ordinal){
@@ -116,11 +119,9 @@ class LoginFragment : Fragment() {
                             u?.setPersona(p);
                             this.enterApp(u);
                         }
+                }else {
+                    Log.e("Error de firebase", "No se encontro al usuario")
                 }
-
-                val intent = Intent(activity, UsuarioFragment::class.java)
-                intent.putExtra("nombreUsuarioOEmail", usuarioOEmail)
-                startActivity(intent)
             }
             .addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error getting documents.", exception)
@@ -153,8 +154,8 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         // TODO: Use the ViewModel
+
     }
 
 }
