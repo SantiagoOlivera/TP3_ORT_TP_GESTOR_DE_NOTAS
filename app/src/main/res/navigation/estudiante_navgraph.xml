@@ -32,4 +32,9 @@
             android:name="estudianteMateria"
             app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria" />
     </fragment>
+    <fragment
+        android:id="@+id/estudianteMateriaInscriptoFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.EstudianteMateriaInscriptoFragment"
+        android:label="fragment_estudiante_materia_inscripto"
+        tools:layout="@layout/fragment_estudiante_materia_inscripto" />
 </navigation>

@@ -37,6 +37,10 @@ class Materia {
         this.id = id;
     }
 
+    fun getId(): String{
+        return this.id;
+    }
+
     fun getNombre(): String {
         return this.nombre;
     }

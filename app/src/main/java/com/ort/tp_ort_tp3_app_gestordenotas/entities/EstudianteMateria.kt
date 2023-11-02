@@ -6,10 +6,20 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class EstudianteMateria() : Parcelable {
 
+    private lateinit var idPersona: String
+    private lateinit var idMateria: String
     private lateinit var estudiante: Estudiante
     private lateinit var materia: Materia
     private lateinit var estado: EstadoMateria
-    private var nota: Int = 0
+    private var isInscripto: Boolean = false;
+    private var nota: Int = 0;
+
+    constructor(idPersona: String, idMateria: String, estado: EstadoMateria, nota: Int): this() {
+        this.setIdPersona(idPersona);
+        this.setIdMateria(idMateria);
+        this.setEstado(estado);
+        this.setNota(nota);
+    }
 
     constructor(estudiante: Estudiante, materia: Materia): this() {
         this.setEstudiante(estudiante);
@@ -23,6 +33,10 @@ class EstudianteMateria() : Parcelable {
         this.setMateria(m);
         this.setEstado(estado);
         this.setNota(nota);
+    }
+
+    fun getIsInscripto(): Boolean{
+        return this.isInscripto;
     }
 
     fun getMateria(): Materia{
@@ -41,6 +55,14 @@ class EstudianteMateria() : Parcelable {
         return this.estado;
     }
 
+    private fun setIdMateria(idMateria: String){
+        this.idMateria = idMateria;
+    }
+
+    private fun setIdPersona(idPersona: String){
+        this.idPersona = idPersona;
+    }
+
     private fun setNota(nota: Int){
         this.nota = nota;
     }
@@ -55,6 +77,11 @@ class EstudianteMateria() : Parcelable {
     private fun setEstudiante(estudiante: Estudiante){
         this.estudiante = estudiante;
     }
+
+    fun setIsInscripto( isInscripto: Boolean ){
+        this.isInscripto = isInscripto;
+    }
+
 
 
 
