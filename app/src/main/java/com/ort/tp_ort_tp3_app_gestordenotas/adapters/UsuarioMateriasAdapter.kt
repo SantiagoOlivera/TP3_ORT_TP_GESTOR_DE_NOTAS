@@ -1,17 +1,22 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.adapters
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstadoMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 
 class UsuarioMateriasAdapter(
-     var materias: MutableList<EstudianteMateria>
+     var materias: MutableList<EstudianteMateria>,
+    var onClick: (Int) -> Unit
 ): RecyclerView.Adapter<UsuarioMateriasAdapter.UsuarioMateriasHolder>() {
 
     class UsuarioMateriasHolder(v: View): RecyclerView.ViewHolder(v){
@@ -21,8 +26,8 @@ class UsuarioMateriasAdapter(
             this.view = v
         }
 
-        fun setNombreCompleto(nombreMateria:String){
-            var txtNombreCompleto: TextView = view.findViewById(R.id.txtNombreCompleto);
+        fun setNombreCompleto(nombreMateria:String?){
+            var txtNombreCompleto: TextView = view.findViewById(R.id.txtNombreMateria);
             txtNombreCompleto.text = nombreMateria;
         }
 
@@ -31,27 +36,35 @@ class UsuarioMateriasAdapter(
             notaMateria.text = nota.toString()
         }
 
-        fun setEstadoMateria(estado: EstadoMateria){
+        fun setEstadoMateria(estado: EstadoMateria, nota: Int){
             var txtEstadoMateria: TextView = view.findViewById(R.id.txtEstado);
             var text: String = "";
             var color: Int = Color.BLACK;
 
-            if( estado == EstadoMateria.PENDIENTE){
+            if(nota == 0){
+                //estado == EstadoMateria.PENDIENTE
                 text = "PENDIENTE";
                 color = Color.BLUE;
             }else if( estado == EstadoMateria.EN_PROGRESO){
                 text = "EN PROGRESO";
                 color = Color.LTGRAY;
-            } else if( estado == EstadoMateria.APROBADA){
+            } else if(nota >= 7){
+                //estado == EstadoMateria.APROBADA
                 text = "APROBADA";
                 color = Color.GREEN;
-            } else if( estado == EstadoMateria.FINAL){
+            } else if(nota >= 4 && nota < 7){
+                //estado == EstadoMateria.FINAL
                 text = "FINAL";
                 color = Color.RED;
             }
 
             txtEstadoMateria.text = text;
             txtEstadoMateria.setTextColor(color);
+        }
+
+        fun getCard(): CardView {
+            val c: CardView = this.view.findViewById(R.id.cardViewEstudianteList);
+            return c;
         }
 
 
@@ -75,6 +88,31 @@ class UsuarioMateriasAdapter(
     override fun onBindViewHolder(holder: UsuarioMateriasHolder, position: Int) {
         holder.setNombreCompleto(this.materias[position].getNombreMateria())
         holder.setNotaMateria(this.materias[position].getNota())
-        holder.setEstadoMateria(this.materias[position].getEstado())
+        holder.setEstadoMateria(this.materias[position].getEstado(), this.materias[position].getNota())
+        /*holder.getCard().setOnClickListener{
+            onClick(position);
+        }*/
+
+        val popupMenu = PopupMenu(holder.itemView.context, holder.itemView)
+        popupMenu.menuInflater.inflate(R.menu.menu_materia_perfil, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when(menuItem!!.itemId){
+                R.id.materia1 ->{
+                    Toast.makeText(holder.itemView.context, menuItem.title, Toast.LENGTH_SHORT).show()
+                }
+                R.id.materia2 ->{
+                    Toast.makeText(holder.itemView.context, menuItem.title, Toast.LENGTH_SHORT).show()
+                }
+                R.id.materia3 ->{
+                    Toast.makeText(holder.itemView.context, menuItem.title, Toast.LENGTH_SHORT).show()
+                }
+                else -> false
+            }
+            true
+        }
+        popupMenu.show()
+
+
     }
 }
