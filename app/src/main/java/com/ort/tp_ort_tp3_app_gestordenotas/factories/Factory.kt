@@ -17,6 +17,7 @@ import com.ort.tp_ort_tp3_app_gestordenotas.entities.Materia
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Persona
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Rol
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
+import com.ort.tp_ort_tp3_app_gestordenotas.repositories.UsuariosRepository
 import kotlinx.coroutines.tasks.await
 import java.util.Date
 
@@ -214,6 +215,7 @@ class Factory {
     suspend fun setEstudiante(e: Estudiante){
         this.setPersona(e.getPersona());
         this.setUsuario(e as Usuario);
+        this.setEstudianteMateria(e);
     }
 
     suspend fun setUsuario(u: Usuario) {
@@ -222,14 +224,15 @@ class Factory {
         if(u is Estudiante){
             rol = Rol.ESTUDIANTE.ordinal;
         }else if(u is Administrador){
-            rol = Rol.ESTUDIANTE.ordinal;
+            rol = Rol.ADMINISTRADOR.ordinal;
         }
 
         val usuario = hashMapOf(
             "usuario" to u.getUsuario(),
             "email" to u.getEmail(),
             "password" to u.getPassword(),
-            "idPersona" to u.getPersona().getIdPersona()
+            "idPersona" to u.getPersona().getIdPersona(),
+            "rol" to rol,
         )
 
         this.db.collection("Usuarios")
@@ -245,7 +248,8 @@ class Factory {
         var fn: Timestamp = Timestamp(p.getFechaDeNacimiento());
 
         val persona = hashMapOf(
-            "dni" to p.getNombre(),
+            "dni" to p.getDNI(),
+            "nombre" to p.getNombre(),
             "apellido" to p.getApellido(),
             "fechaDeNacimiento" to fn,
             "imagen" to "",
@@ -261,10 +265,44 @@ class Factory {
 
         p.setIdPersona(idPersona);
 
+
+
     }
 
     suspend fun setEstudianteMateria(e: Estudiante) {
+        var materias: MutableList<Materia> = this.getListMaterias();
+        for(m in materias) {
 
+            val em = hashMapOf(
+                "idPersona" to e.getPersona().getIdPersona(),
+                "idMateria" to m.getId(),
+                "estado" to EstadoMateria.PENDIENTE.ordinal,
+                "isInscripto" to false,
+                "nota" to 0
+            );
+
+            this.db.collection("EstudianteMateria")
+                .add(em)
+                .await()
+        }
+    }
+
+    suspend fun setAllMaterias() {
+        var data: MutableList<Materia> = UsuariosRepository.getMaterias();
+        for(m in data) {
+
+            val materia = hashMapOf(
+                "id" to m.getId(),
+                "nombre" to m.getNombre(),
+                "descripcion" to m.getDescripcion(),
+                "anioMateria" to m.getAnioMateria().ordinal,
+            );
+
+            this.db.collection("Materias")
+                .document(m.getId())
+                .set(materia)
+                .await()
+        }
     }
 
 }

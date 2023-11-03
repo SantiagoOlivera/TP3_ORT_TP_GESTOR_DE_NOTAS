@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -57,30 +58,20 @@ class EstudianteListFragment : Fragment() {
     override fun onStart() {
         super.onStart();
 
+        this.viewModel.getEstudiantes();
         this.getEstudiantesList();
 
     }
 
-    private fun getEstudiantesList(){
-
-        this.estudiantes = mutableListOf();
-
-        val parentJob = Job();
-        val scope: CoroutineScope = CoroutineScope(Dispatchers.Default + parentJob);
-        scope.launch {
-            estudiantes = factory.getEstudiantes();
-            Snackbar.make(v, "Est: ${estudiantes[0]?.getPersona()?.getNombreCompleto()}", Snackbar.LENGTH_LONG).show();
-            initListEstudiantes(estudiantes);
-        }
-
-        //estudiantes.add(UsuariosRepository.getUsuarios().get(0) as Estudiante);
-        //initListEstudiantes(estudiantes);
-
-
+    private fun getEstudiantesList() {
+       viewModel.estudiantes.observe(viewLifecycleOwner, Observer { list ->
+           this.initListEstudiantes(list);
+       });
     }
 
     private fun initListEstudiantes(list: MutableList<Estudiante>){
         if(list != null){
+
             this.adapter = EstudianteAdapter(
                 list,
                 { i ->
@@ -94,6 +85,8 @@ class EstudianteListFragment : Fragment() {
             this.recycler.adapter = this.adapter;
         }
     }
+
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
