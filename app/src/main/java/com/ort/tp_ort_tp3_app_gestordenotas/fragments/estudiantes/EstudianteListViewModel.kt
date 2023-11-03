@@ -15,11 +15,8 @@ class EstudianteListViewModel : ViewModel() {
 
 
     val estudiantes: MutableLiveData<MutableList<Estudiante>> = MutableLiveData<MutableList<Estudiante>>()
-    fun getEstudiantes(){
-
-        var ret: MutableList<Estudiante> = mutableListOf();
+    fun getEstudiantes() {
         var factory: Factory = Factory();
-
         viewModelScope.launch {
             estudiantes.value = factory.getEstudiantes();
         }

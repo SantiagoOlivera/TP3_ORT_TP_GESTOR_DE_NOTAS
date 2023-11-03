@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ort.tp_ort_tp3_app_gestordenotas.R
@@ -64,22 +65,25 @@ class AgregarEstudianteFragment : Fragment() {
         super.onStart();
 
         this.btnAgregarEstudiante.setOnClickListener {
-
-            val parentJob = Job();
-            val scope: CoroutineScope = CoroutineScope(Dispatchers.Default + parentJob);
-            scope.launch {
-
-                var e: Estudiante = getEstudiante();
-                factory.setEstudiante(e);
-
-                findNavController().navigateUp();
-                Snackbar.make(v, "Se agrego estudiante", Snackbar.LENGTH_LONG).show();
-            }
+            var e: Estudiante = getEstudiante();
+            this.viewModel.guardarEstudiante(e);
+            this.guardarEstudiante();
 
         }
     }
 
-    private suspend fun getEstudiante(): Estudiante {
+    private fun guardarEstudiante(){
+        this.viewModel.finalizoGuardado.observe(viewLifecycleOwner, Observer { v ->
+            volverMenuPrincipal();
+        });
+    }
+
+    private fun volverMenuPrincipal(){
+        findNavController().navigateUp();
+        Snackbar.make(this.v, "Se agrego estudiante", Snackbar.LENGTH_LONG).show();
+    }
+
+    private fun getEstudiante(): Estudiante {
 
         var dni: String = this.inputDNI.text.toString().trim();
         var apellido: String = this.inputApellido.text.toString().trim();
@@ -87,19 +91,12 @@ class AgregarEstudianteFragment : Fragment() {
         var password: String = this.inputPassword.text.toString().trim();
         var fechaDeNacimiento: String = this.inputFechaDeNacimiento.text.toString();
 
-
         var fn: Date = Date(1991, 10,4,);
 
         var p: Persona = Persona(dni, nombre, apellido, fn);
         var email: String = "${nombre.replace(" ", "").toLowerCase()}.${apellido.replace(" ", "").toLowerCase()}@ort.edu.ar";
 
         var e: Estudiante = Estudiante(dni, email, password, p);
-
-        var materias: MutableList<Materia> = this.factory.getListMaterias();
-
-        for(m: Materia in materias){
-            e.agregarEstudianteMateria(EstudianteMateria(e, m, EstadoMateria.PENDIENTE, 0));
-        }
 
         return e;
     }
