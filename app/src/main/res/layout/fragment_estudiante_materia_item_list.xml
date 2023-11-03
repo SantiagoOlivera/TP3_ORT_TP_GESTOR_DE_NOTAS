@@ -51,20 +51,17 @@
             app:layout_constraintTop_toBottomOf="@+id/txtNombreMateria"
             app:layout_constraintVertical_bias="0.542" />
 
-        <ImageButton
-            android:id="@+id/idBtnMateria"
-            android:layout_width="45dp"
-            android:layout_height="44dp"
-            android:backgroundTint="#FFFFFF"
-            android:clickable="true"
-            android:contentDescription="abrir seleccion de opciones"
+        <ImageView
+            android:id="@+id/idBtn"
+            android:layout_width="96dp"
+            android:layout_height="54dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.727"
+            app:layout_constraintHorizontal_bias="0.444"
             app:layout_constraintStart_toEndOf="@+id/txtNota"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.883"
-            app:srcCompat="@drawable/images" />
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/_466617_200" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

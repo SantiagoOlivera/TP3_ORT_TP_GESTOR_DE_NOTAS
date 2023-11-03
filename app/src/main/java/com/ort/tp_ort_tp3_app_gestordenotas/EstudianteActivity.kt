@@ -33,6 +33,9 @@ class EstudianteActivity : AppCompatActivity() {
     private lateinit var v: View
     private lateinit var estudiante: Estudiante;
     private lateinit var personaId: String
+    private lateinit var descripcion: String
+    private lateinit var nombreMateria: String
+    private lateinit var anioMateria: AnioMateria
 
 
     fun getEstudiante(): Estudiante{
@@ -107,18 +110,20 @@ class EstudianteActivity : AppCompatActivity() {
                                 Snackbar.make(this.v, "PersonaMateria: ${idMateria}", Snackbar.LENGTH_LONG).show();
 
                                 db.collection("Materias")
-                                    .document(idMateria)
+                                    .whereEqualTo("id", idMateria )
                                     .get()
                                     .addOnSuccessListener{ materia ->
 
                                         Snackbar.make(this.v, "Materia: ${idMateria}", Snackbar.LENGTH_LONG).show();
 
-                                        var descripcion: String =  materia.get("descripcion") as String;
-                                        var nombre: String =  materia.get("nombre") as String;
-                                        var anioMateria: AnioMateria = AnioMateria.entries.get((materia.get("anioMateria") as Number).toInt());
+                                        for (subject in materia) {
 
+                                            this.descripcion =  subject.get("descripcion") as String;
+                                            this.nombreMateria =  subject.get("nombre") as String;
+                                            this.anioMateria = AnioMateria.entries.get((subject.get("anioMateria") as Number).toInt());
+                                        }
 
-                                        var m: Materia = Materia(idMateria, nombre, descripcion, anioMateria);
+                                        var m: Materia = Materia(idMateria, nombreMateria, descripcion, anioMateria);
                                         var em: EstudianteMateria = EstudianteMateria(this.estudiante, m, estado, nota);
 
 

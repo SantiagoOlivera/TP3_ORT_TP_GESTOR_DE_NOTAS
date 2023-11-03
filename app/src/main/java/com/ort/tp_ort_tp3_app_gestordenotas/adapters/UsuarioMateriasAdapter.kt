@@ -1,5 +1,6 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.adapters
 
+import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -85,6 +86,29 @@ class UsuarioMateriasAdapter(
         return materias.size;
     }
 
+    private fun mostrarMenuEmergente(context: Context, view: View){
+
+        val popupMenu = PopupMenu(context, view)
+        popupMenu.menuInflater.inflate(R.menu.menu_materia_perfil, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when(menuItem!!.itemId){
+                R.id.materia1 ->{
+                    Toast.makeText(context, menuItem.title, Toast.LENGTH_SHORT).show()
+                }
+                R.id.materia2 ->{
+                    Toast.makeText(context, menuItem.title, Toast.LENGTH_SHORT).show()
+                }
+                R.id.materia3 ->{
+                    Toast.makeText(context, menuItem.title, Toast.LENGTH_SHORT).show()
+                }
+                else -> false
+            }
+            true
+        }
+        popupMenu.show()
+    }
+
     override fun onBindViewHolder(holder: UsuarioMateriasHolder, position: Int) {
         holder.setNombreCompleto(this.materias[position].getNombreMateria())
         holder.setNotaMateria(this.materias[position].getNota())
@@ -92,26 +116,9 @@ class UsuarioMateriasAdapter(
         /*holder.getCard().setOnClickListener{
             onClick(position);
         }*/
-
-        val popupMenu = PopupMenu(holder.itemView.context, holder.itemView)
-        popupMenu.menuInflater.inflate(R.menu.menu_materia_perfil, popupMenu.menu)
-
-        popupMenu.setOnMenuItemClickListener { menuItem ->
-            when(menuItem!!.itemId){
-                R.id.materia1 ->{
-                    Toast.makeText(holder.itemView.context, menuItem.title, Toast.LENGTH_SHORT).show()
-                }
-                R.id.materia2 ->{
-                    Toast.makeText(holder.itemView.context, menuItem.title, Toast.LENGTH_SHORT).show()
-                }
-                R.id.materia3 ->{
-                    Toast.makeText(holder.itemView.context, menuItem.title, Toast.LENGTH_SHORT).show()
-                }
-                else -> false
-            }
-            true
+        holder.itemView.setOnClickListener{
+            mostrarMenuEmergente(holder.itemView.context, holder.itemView)
         }
-        popupMenu.show()
 
 
     }
