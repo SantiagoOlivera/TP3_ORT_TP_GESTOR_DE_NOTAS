@@ -24,6 +24,12 @@ class Estudiante : Usuario {
         this.initMaterias();
     }
 
+    fun getListMateriaPorAnio(anioMateria: AnioMateria): MutableList<EstudianteMateria>{
+        var ret: MutableList<EstudianteMateria> = this.materias.filter {
+                m -> m.getMateria().getAnioMateria() == anioMateria;
+        }.toMutableList();
+        return ret;
+    }
 
     fun getListEstudianteMateria(): MutableList<EstudianteMateria> {
         return this.materias;

@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 open class Usuario() : Parcelable {
 
+    private lateinit var id: String
     private lateinit var usuario: String
     private lateinit var email: String
     private lateinit var password: String
@@ -38,6 +39,9 @@ open class Usuario() : Parcelable {
         this.setPersona(persona);
     }
 
+    fun getId():String{
+        return this.id;
+    }
 
     fun getUsuario(): String{
         return this.usuario;
@@ -59,7 +63,9 @@ open class Usuario() : Parcelable {
         return this.idPersona;
     }
 
-
+    fun setId(id: String){
+        this.id = id;
+    }
     private fun setUsuario(usuario: String){
         this.usuario =usuario;
     }

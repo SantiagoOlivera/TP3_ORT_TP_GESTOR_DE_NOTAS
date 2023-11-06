@@ -14,6 +14,8 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.ort.tp_ort_tp3_app_gestordenotas.adapters.ViewPagerAdapter
+import com.ort.tp_ort_tp3_app_gestordenotas.databinding.ActivityEstudianteBinding
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstadoMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
@@ -39,92 +41,36 @@ class EstudianteActivity : AppCompatActivity() {
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var v: View
-    private lateinit var estudiante: Estudiante;
     private lateinit var factory: Factory;
+    private lateinit var idUsuario: String;
+    private lateinit var binding: ActivityEstudianteBinding
 
-
-    fun getEstudiante(): Estudiante{
-        return this.estudiante;
-    }
-
-    fun getPersona(){
-
+    fun getIdUsuario(): String {
+        return this.idUsuario;
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_estudiante);
 
-
+        //Factory
         this.factory = Factory();
 
+        //View
         this.v = findViewById(android.R.id.content);
 
-
+        //Navigation bottom bar
         this.navHostFragment = supportFragmentManager.findFragmentById(R.id.estudiante_navgraph) as NavHostFragment;
         this.bottomNavView = findViewById(R.id.bottom_bar);
-
         NavigationUI.setupWithNavController(this.bottomNavView, this.navHostFragment.navController);
 
 
-
-
     }
 
-
-
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onStart() {
         super.onStart();
-
-        var view: View = this.v;
-        Snackbar.make(this.v, "Estudiante", Snackbar.LENGTH_LONG).show();
-
-        var m: Materia? = null;
-
-        val parentJob = Job();
-        val scope: CoroutineScope = CoroutineScope(Dispatchers.Default + parentJob);
-
-        scope.launch {
-            var materias: MutableList<Materia>? = factory.getListMaterias();
-            //var estudiantes: MutableList<Estudiante>? = factory.getEstudiantes();
-            //Snackbar.make(view, "Est: ${estudiantes?.get(0)?.getPersona()?.getNombreCompleto()}", Snackbar.LENGTH_LONG).show();
-
-            var e: Estudiante? = factory.getEstudiante("egiKhZztEGpYKB3AcZbO");
-
-            //Snackbar.make(view, "Est: ${e?.getPersona()?.getNombreCompleto()}", Snackbar.LENGTH_LONG).show();
-        }
-
-
-
-    }
-
-
-    private suspend fun getMateria(idMateria: String): Materia?{
-        var ret: Materia? = null;
-        val db = Firebase.firestore;
-
-        var materia: DocumentSnapshot = db.collection("Materias")
-            .document(idMateria)
-            .get()
-            .await();
-
-        if(materia.data != null){
-
-            var idMateria: String = materia.id;
-            var descripcion: String =  materia.get("descripcion") as String;
-            var nombre: String =  materia.get("nombre") as String;
-            var anioMateria: AnioMateria = AnioMateria.entries.get((materia.get("anioMateria") as Number).toInt());
-
-            ret = Materia(idMateria, nombre, descripcion, anioMateria);
-        }
-
-        //.addOnSuccessListener { materia ->
-        //var m: Materia = this.getMateria(materia);
-        //this.estudiante.agregarEstudianteMateria(em);
-        //}
-
-        return ret;
+        var idUsuario: String = intent.getStringExtra("idUsuario") as String;
+        this.idUsuario = idUsuario;
     }
 
 }

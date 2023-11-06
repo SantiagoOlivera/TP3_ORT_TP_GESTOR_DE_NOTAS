@@ -106,10 +106,13 @@ class Factory {
                 ret = Administrador(usuario, email, password, idPersona);
             }
 
+
+
             var p: Persona? = this.getPersona(idPersona);
 
             if(ret != null){
                 if(p != null) {
+                    ret.setId(idDocument);
                     ret.setPersona(p);
                 }
             }

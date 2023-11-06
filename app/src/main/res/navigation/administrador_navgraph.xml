@@ -41,4 +41,9 @@
         android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.AgregarEstudianteFragment"
         android:label="fragment_agregar_estudiante"
         tools:layout="@layout/fragment_agregar_estudiante" />
+    <fragment
+        android:id="@+id/tabsEstudianteMateriaListFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria.TabsEstudianteMateriaListFragment"
+        android:label="fragment_tabs_estudiante_materia_list"
+        tools:layout="@layout/fragment_tabs_estudiante_materia_list" />
 </navigation>
