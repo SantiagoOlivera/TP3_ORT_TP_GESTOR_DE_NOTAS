@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_estudianteListFragment_to_estudianteFragment"
             app:destination="@id/estudianteFragment" />
+        <action
+            android:id="@+id/action_estudianteListFragment_to_agregarEstudianteFragment"
+            app:destination="@id/agregarEstudianteFragment" />
     </fragment>
     <fragment
         android:id="@+id/estudianteFragment"
@@ -33,4 +36,9 @@
         android:name="com.ort.tp_ort_tp3_app_gestordenotas.pages.InicioAdministradorPageFragment"
         android:label="fragment_inicio_administrador_page"
         tools:layout="@layout/fragment_inicio_administrador_page" />
+    <fragment
+        android:id="@+id/agregarEstudianteFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.AgregarEstudianteFragment"
+        android:label="fragment_agregar_estudiante"
+        tools:layout="@layout/fragment_agregar_estudiante" />
 </navigation>

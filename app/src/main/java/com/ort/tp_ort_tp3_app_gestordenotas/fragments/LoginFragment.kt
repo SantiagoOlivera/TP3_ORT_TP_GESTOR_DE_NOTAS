@@ -13,11 +13,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.ort.tp_ort_tp3_app_gestordenotas.AdministradorActivity
 import com.ort.tp_ort_tp3_app_gestordenotas.EstudianteActivity
 import com.ort.tp_ort_tp3_app_gestordenotas.MainActivity
 import com.ort.tp_ort_tp3_app_gestordenotas.R
@@ -26,9 +23,13 @@ import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Persona
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Rol
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
-import com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.UsuarioFragment
 import com.ort.tp_ort_tp3_app_gestordenotas.repositories.UsuariosRepository
-import java.util.Date
+import com.ort.tp_ort_tp3_app_gestordenotas.factories.Factory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+
 
 
 class LoginFragment : Fragment() {
@@ -45,11 +46,13 @@ class LoginFragment : Fragment() {
     private lateinit var inputPassword: EditText;
     private lateinit var repository: UsuariosRepository;
     private lateinit var snackbar: Snackbar
+    private lateinit var factory: Factory;
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        this.factory = Factory();
         this.v = inflater.inflate(R.layout.fragment_login, container, false);
         this.inputUsuarioOEmail = this.v.findViewById(R.id.inputUsuarioOEmail);
         this.inputPassword = this.v.findViewById(R.id.inputPassword);
@@ -64,91 +67,66 @@ class LoginFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         btnLogin.setOnClickListener {
-            val db = Firebase.firestore
-            this.btnLogin.onEditorAction(EditorInfo.IME_ACTION_DONE);
 
-            var u: Usuario? = null;
             var usuarioOEmail: String = this.inputUsuarioOEmail.text.toString();
             var password: String = this.inputPassword.text.toString();
-
-            db.collection("Usuarios")
-            .get()
-            .addOnSuccessListener { usuarios ->
+            this.btnLogin.onEditorAction(EditorInfo.IME_ACTION_DONE);
 
 
-                //Encontrar usuario de la base
-                var document = usuarios.find { u ->
-                    ( u.data.get("usuario") == usuarioOEmail || u.data.get("email") == usuarioOEmail ) && u.data.get("password") == password
-                }
+            //Snackbar.make(this.v, "Usuario: ${usuario}, Email:${email}, Password:${password}, IdPersona:${idPersona}", Snackbar.LENGTH_LONG).show();
 
-                if(document != null){
 
-                    var usuario: String = document.data.get("usuario") as String;
-                    var email: String = document.data.get("email") as String;
-                    var password: String = document.data.get("password") as String;
-                    var idPersona: String = document.data.get("idPersona") as String;
-                    var rol: Int = ( document.data.get("rol") as Number ).toInt();
+            val parentJob = Job();
+            val scope: CoroutineScope = CoroutineScope(Dispatchers.Default + parentJob);
+            scope.launch {
+                var u: Usuario? = factory.getUsuario(usuarioOEmail, password);
+                if(u!= null){
+                    enterApp(u);
 
-                    viewModel.usuario = usuario
-                    viewModel.email = email
-
-                    //Snackbar.make(this.v, "ROL:${rol}, ESTUDIANTE: ${Rol.ESTUDIANTE.ordinal}", Snackbar.LENGTH_LONG).show();
-                    if(rol === Rol.ESTUDIANTE.ordinal){
-                        u = Estudiante(usuario, email, password, idPersona);
-                    }else if (rol === Rol.ADMINISTRADOR.ordinal){
-                        u = Administrador(usuario, email, password, idPersona);
-                    }
-
-                    //Snackbar.make(this.v, "Usuario: ${usuario}, Email:${email}, Password:${password}, IdPersona:${idPersona}", Snackbar.LENGTH_LONG).show();
-
-                    db.collection("Personas")
-                        .document(idPersona)
-                        .get()
-                        .addOnSuccessListener { document ->
-
-                            var dni: String = document.data?.get("dni") as String;
-                            var nombre: String = document.data?.get("nombre") as String;
-                            var apellido: String = document.data?.get("apellido") as String;
-                            //var fechaDeNacimiento: Date = Date(2023,10,21);
-                            var fechaDeNacimiento: Date = (document.data?.get("fechaDeNacimiento") as Timestamp).toDate()
-
-                            val p: Persona = Persona(dni, nombre, apellido, fechaDeNacimiento);
-
-                            Snackbar.make(this.v, "RESULT:${nombre}", Snackbar.LENGTH_LONG).show();
-
-                            u?.setPersona(p);
-                            this.enterApp(u);
-                        }
-                }else {
-                    Log.e("Error de firebase", "No se encontro al usuario")
                 }
             }
-            .addOnFailureListener { exception ->
-                Log.w(ContentValues.TAG, "Error getting documents.", exception)
-            }
+
+
         };
     }
 
     private fun enterApp(u: Usuario?) {
+        if(u != null){
 
-        if(u is Estudiante){
-            //Pantalla para estudiantes
-            val intent = Intent(parentFragment?.activity as MainActivity, EstudianteActivity::class.java)
+            var intent: Intent? = null;
 
-            intent.putExtra("usuario", u.getUsuario());
-            intent.putExtra("email", u.getEmail());
-            intent.putExtra("password", u.getPassword());
-            intent.putExtra("idPersona", u.getIdPersona());
+            if(u is Estudiante){
 
-            Snackbar.make(this.v, "${u.getUsuario()}", Snackbar.LENGTH_LONG).show();
+                //Pantalla para estudiantes
+                intent = Intent(parentFragment?.activity as MainActivity, EstudianteActivity::class.java)
 
-            startActivity(intent);
-            //val action = LoginFragmentDirections.actionLoginFragmentToEstudianteActivity(u);
-            //findNavController().navigate(action);
-        }else if(u is Administrador){
-            //Patalla para administrador
-            val action = LoginFragmentDirections.actionLoginFragmentToAdministradorActivity(u);
-            findNavController().navigate(action);
+                intent.putExtra("usuario", u.getUsuario());
+                intent.putExtra("email", u.getEmail());
+                intent.putExtra("password", u.getPassword());
+                intent.putExtra("idPersona", u.getIdPersona());
+
+                Snackbar.make(this.v, "${u.getUsuario()}", Snackbar.LENGTH_LONG).show();
+
+                //val action = LoginFragmentDirections.actionLoginFragmentToEstudianteActivity(u);
+                //findNavController().navigate(action);
+            }else if(u is Administrador){
+
+                //Patalla para administrador
+                intent = Intent(parentFragment?.activity as MainActivity, AdministradorActivity::class.java)
+
+                intent.putExtra("usuario", u.getUsuario());
+                intent.putExtra("email", u.getEmail());
+                intent.putExtra("password", u.getPassword());
+                intent.putExtra("idPersona", u.getIdPersona());
+
+
+                //val action = LoginFragmentDirections.actionLoginFragmentToAdministradorActivity(u);
+                //findNavController().navigate(action);
+            }
+
+            if(intent != null){
+                startActivity(intent);
+            }
         }
     }
 

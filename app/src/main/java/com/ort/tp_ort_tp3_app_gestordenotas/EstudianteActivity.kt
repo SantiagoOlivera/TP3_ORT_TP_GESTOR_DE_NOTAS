@@ -12,6 +12,7 @@ import com.google.android.gms.common.internal.safeparcel.SafeParcelable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
@@ -21,6 +22,14 @@ import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Materia
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Persona
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
+import com.ort.tp_ort_tp3_app_gestordenotas.factories.Factory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.io.Serializable
 import java.util.Date
 import kotlin.reflect.safeCast
@@ -36,118 +45,111 @@ class EstudianteActivity : AppCompatActivity() {
     private lateinit var descripcion: String
     private lateinit var nombreMateria: String
     private lateinit var anioMateria: AnioMateria
+    private lateinit var factory: Factory;
 
 
-    fun getEstudiante(): Estudiante{
+    fun getEstudiante(): Estudiante {
         return this.estudiante;
     }
-
-    fun getPersona(){
+    fun getPersona() {
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_estudiante);
+
+
+        this.factory = Factory();
+
         this.v = findViewById(android.R.id.content);
 
 
-        this.navHostFragment = supportFragmentManager.findFragmentById(R.id.estudiante_navgraph) as NavHostFragment;
+        this.navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.estudiante_navgraph) as NavHostFragment;
         this.bottomNavView = findViewById(R.id.bottom_bar);
 
         NavigationUI.setupWithNavController(this.bottomNavView, this.navHostFragment.navController);
+
 
         var usuario: String? = intent.getStringExtra("usuario") ?: "";
         var email: String? = intent.getStringExtra("email") ?: "";
         var password: String? = intent.getStringExtra("password") ?: "";
         this.personaId = intent.getStringExtra("idPersona") ?: "";
 
-        if (!usuario.isNullOrBlank() && !email.isNullOrBlank() && !password.isNullOrBlank() && !personaId.isNullOrBlank()){
-            this.estudiante = Estudiante(usuario.toString(), email.toString(), password.toString(), personaId.toString() );
-        }else {
+        //aca
+        if (!usuario.isNullOrBlank() && !email.isNullOrBlank() && !password.isNullOrBlank() && !personaId.isNullOrBlank()) {
+            this.estudiante = Estudiante(
+                usuario.toString(),
+                email.toString(),
+                password.toString(),
+                personaId.toString()
+            );
+        } else {
             Log.e("Error", "campo invalido")
         }
+        //aca
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onStart() {
         super.onStart();
 
+        var view: View = this.v;
+        Snackbar.make(this.v, "Estudiante", Snackbar.LENGTH_LONG).show();
 
-        if (personaId != null) {
-            val db = Firebase.firestore
-            db.collection("Personas")
-                .document(personaId)
-                .get()
-                .addOnSuccessListener { document ->
+                    var m: Materia? = null;
 
-                    var dni: String = document.data?.get("dni") as String;
-                    var nombre: String = document.data?.get("nombre") as String;
-                    var apellido: String = document.data?.get("apellido") as String;
-                    //var fechaDeNacimiento: Date = Date(2023,10,21);
-                    var fechaDeNacimiento: Date = (document.data?.get("fechaDeNacimiento") as Timestamp).toDate()
+                    val parentJob = Job();
+                    val scope: CoroutineScope = CoroutineScope(Dispatchers.Default + parentJob);
 
-                    val p: Persona = Persona(personaId, dni, nombre, apellido, fechaDeNacimiento);
+                    scope.launch {
+                        var materias: MutableList<Materia>? = factory.getListMaterias();
+                        //var estudiantes: MutableList<Estudiante>? = factory.getEstudiantes();
+                        //Snackbar.make(view, "Est: ${estudiantes?.get(0)?.getPersona()?.getNombreCompleto()}", Snackbar.LENGTH_LONG).show();
+                        val e: Estudiante? = factory.getEstudiante("egiKhZztEGpYKB3AcZbO");
+                        //Snackbar.make(this.v, "RESULT: ${nombre}", Snackbar.LENGTH_LONG).show();
+                    }
 
-                    //Snackbar.make(this.v, "RESULT: ${nombre}", Snackbar.LENGTH_LONG).show();
-
-                    this.estudiante?.setPersona(p);
-
-                    Snackbar.make(this.v, "RESULT: ${p.getIdPersona()}", Snackbar.LENGTH_LONG).show();
-
-                    db.collection("EstudianteMateria")
-                        .whereEqualTo("idPersona", p.getIdPersona())
-                        .get()
-                        .addOnSuccessListener {  result ->
-                            for(document in result) {
-
-                                var idMateria: String = document.get("idMateria") as String;
-                                var estado: EstadoMateria = EstadoMateria.entries.get((document.get("estado") as Number).toInt());
-                                var nota: Int = ( document.get("nota") as Number ).toInt();
-
-                                Snackbar.make(this.v, "PersonaMateria: ${idMateria}", Snackbar.LENGTH_LONG).show();
-
-                                db.collection("Materias")
-                                    .whereEqualTo("id", idMateria )
-                                    .get()
-                                    .addOnSuccessListener{ materia ->
-
-                                        Snackbar.make(this.v, "Materia: ${idMateria}", Snackbar.LENGTH_LONG).show();
-
-                                        for (subject in materia) {
-
-                                            this.descripcion =  subject.get("descripcion") as String;
-                                            this.nombreMateria =  subject.get("nombre") as String;
-                                            this.anioMateria = AnioMateria.entries.get((subject.get("anioMateria") as Number).toInt());
-                                        }
-
-                                        var m: Materia = Materia(idMateria, nombreMateria, descripcion, anioMateria);
-                                        var em: EstudianteMateria = EstudianteMateria(this.estudiante, m, estado, nota);
-
-
-                                        this.estudiante.agregarEstudianteMateria(em);
-                                    }
-                            }
-                        }
                 }
+
+        }
+        private suspend fun getMateria(idMateria: String): Materia? {
+            var ret: Materia? = null;
+            val db = Firebase.firestore;
+
+            var materia: DocumentSnapshot = db.collection("Materias")
+                .document(idMateria)
+                .get()
+                .await();
+
+            if (materia.data != null) {
+
+                var idMateria: String = materia.id;
+                var descripcion: String = materia.get("descripcion") as String;
+                var nombre: String = materia.get("nombre") as String;
+                var anioMateria: AnioMateria =
+                    AnioMateria.entries.get((materia.get("anioMateria") as Number).toInt());
+
+                ret = Materia(idMateria, nombre, descripcion, anioMateria);
+            }
+
+            //.addOnSuccessListener { materia ->
+            //var m: Materia = this.getMateria(materia);
+            //this.estudiante.agregarEstudianteMateria(em);
+            //}
+
+            return ret;
         }
 
 
-        Snackbar.make(this.v, "Estudiante", Snackbar.LENGTH_LONG).show();
-
-
-    }
 
 
 
 
 
 
-
-
-}
 
 
 

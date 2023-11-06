@@ -37,8 +37,16 @@ class Materia {
         this.id = id;
     }
 
+    fun getId(): String{
+        return this.id;
+    }
+
     fun getNombre(): String {
         return this.nombre;
+    }
+
+    fun getDescripcion(): String {
+        return this.descripcion;
     }
 
     private fun setNombre(nombre: String){
@@ -51,6 +59,10 @@ class Materia {
 
     private fun setAnioMateria(anioMateria: AnioMateria){
         this.anioMateria = anioMateria;
+    }
+
+    fun getAnioMateria(): AnioMateria{
+        return this.anioMateria;
     }
 
     private fun initArchivos(){

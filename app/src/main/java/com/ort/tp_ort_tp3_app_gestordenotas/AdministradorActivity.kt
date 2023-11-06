@@ -22,7 +22,16 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.ort.tp_ort_tp3_app_gestordenotas.databinding.ActivityEstudianteBinding
+import com.ort.tp_ort_tp3_app_gestordenotas.databinding.ActivityMainBinding
+import com.ort.tp_ort_tp3_app_gestordenotas.entities.Administrador
+import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
+import com.ort.tp_ort_tp3_app_gestordenotas.factories.Factory
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.LoginFragmentDirections
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class AdministradorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,13 +40,23 @@ class AdministradorActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     private lateinit var navView: NavigationView
     private lateinit var navHostFragment: NavHostFragment
+    private lateinit var usuario: Administrador
+    private lateinit var v: View
+    //private lateinit var binding: ActivityEstudianteBinding
+    private var factory: Factory = Factory();
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_administrador);
 
+        //this.binding = ActivityEstudianteBinding.inflate(layoutInflater);
+        //setContentView(this.binding.root);
 
 
+
+
+        this.v = findViewById(android.R.id.content);
 
 
         val toolbar: Toolbar = findViewById(R.id.toolbar_main);
@@ -62,6 +81,28 @@ class AdministradorActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     }
 
+    override fun onStart() {
+        super.onStart();
+
+        //var view: View = this.v;
+        var u: String? = intent.getStringExtra("usuario") ?: "";
+        //var email: String? = intent.getStringExtra("email") ?: "";
+        var p: String? = intent.getStringExtra("password") ?: "";
+        //var idPersona: String? = intent.getStringExtra("idPersona") ?: "";
+
+        val parentJob = Job();
+        val scope: CoroutineScope = CoroutineScope(Dispatchers.Default + parentJob);
+        scope.launch {
+            usuario = factory.getUsuario(u.toString(), p.toString()) as Administrador;
+            if(usuario!= null) {
+                //Snackbar.make(v, "Admin: ${ usuario?.getPersona()?.getNombreCompleto() }", Snackbar.LENGTH_LONG).show();
+            }
+        }
+
+
+    }
+
+
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -70,8 +111,8 @@ class AdministradorActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             R.id.estudianteListFragment -> {
                 Toast.makeText(this, "Click inicio", Toast.LENGTH_SHORT).show();
             }
-            R.id.usuarioFragment -> {
-                Toast.makeText(this, "Click usuario", Toast.LENGTH_SHORT).show();
+            R.id.agregarEstudianteFragment -> {
+                Toast.makeText(this, "Click agregar estudiante", Toast.LENGTH_SHORT).show();
             }
         }
 

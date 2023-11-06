@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,8 +28,14 @@ import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Materia
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Persona
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
+import com.ort.tp_ort_tp3_app_gestordenotas.factories.Factory
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.LoginViewModel
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria.EstudianteMateriaListFragmentDirections
+import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.EstudianteListViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,13 +57,14 @@ class UsuarioFragment : Fragment() {
     private lateinit var email: TextView
     private lateinit var dni: TextView
     private lateinit var lista: RecyclerView
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: UsuarioViewModel
     private lateinit var carrera: TextView
     private lateinit var sede: TextView
     private lateinit var adapter: UsuarioMateriasAdapter
-    private lateinit var usuario: Usuario
     private lateinit var listaMaterias: MutableList<EstudianteMateria>
     private lateinit var personaAux: Persona
+    private lateinit var factory: Factory
+    private lateinit var e: Estudiante
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +79,6 @@ class UsuarioFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        viewModel = ViewModelProvider(requireActivity()).get(LoginViewModel::class.java)
         v = inflater.inflate(R.layout.fragment_usuario, container, false)
         nombreCompleto = v.findViewById(R.id.NombreUsuario)
         email = v.findViewById(R.id.emailId)
@@ -87,13 +94,9 @@ class UsuarioFragment : Fragment() {
         super.onStart()
         this.carrera.text = "ASC"
         this.sede.text = "Almagro"
-        val estudianteActivity: EstudianteActivity = parentFragment?.activity as EstudianteActivity;
-        val e: Estudiante = estudianteActivity.getEstudiante();
-        this.usuario = e
-        this.email.text = viewModel.email
-
-
+        factory = Factory();
         val db = Firebase.firestore
+
 
 
         //con este codigo se ve las materias
@@ -110,103 +113,158 @@ class UsuarioFragment : Fragment() {
 
 
         // con este se ve los datos del estudiante
-        db.collection("Personas")
-            .get()
-            .addOnSuccessListener { personas ->
+                       db.collection("Personas")
+                           .get()
+                           .addOnSuccessListener { personas ->
+                               for (persona in personas) {
+                                   val personaId = persona.id
+
+                                   viewModel.getEstudiante(personaId).observe(viewLifecycleOwner) { estudiante ->
+                                       if (estudiante != null) {
+                                           var e: Estudiante = estudiante
+                                           if (e != null) {
+                                               //Encontrar usuario de la base
+                                               var document = personas.find { p ->
+                                                   p.id == e?.getIdPersona()
+                                               }
+
+                                               if (document != null) {
+                                                   this.dni.text = document.data.get("dni") as String
+                                                   var dniPersona = this.dni.text as String
+                                                   this.nombreCompleto.text =
+                                                       document.data.get("nombre") as String
+                                                   var nombre = this.nombreCompleto.text as String
+                                                   var apellido = document.data.get("apellido") as String
+                                                   var fechaNacimiento =
+                                                       (document.data?.get("fechaDeNacimiento") as Timestamp).toDate()
+                                                   if (this.dni != null && this.nombreCompleto != null && apellido != null && fechaNacimiento != null) {
+                                                       if (e != null) {
+                                                           this.personaAux = Persona(
+                                                               e.getIdPersona(),
+                                                               dniPersona,
+                                                               nombre,
+                                                               apellido,
+                                                               fechaNacimiento
+                                                           )
+                                                       }
+                                                   }
+                                               } else {
+                                                   Log.e("Error de firestore", "Persona no encontrada")
+                                               }
+
+                                               if (personaAux != null) {
+                                                   db.collection("EstudianteMateria")
+                                                       .whereEqualTo("idPersona", personaAux.getIdPersona())
+                                                       .get()
+                                                       .addOnSuccessListener { result ->
+                                                           for (estM in result) {
+
+                                                               var idMateria: String =
+                                                                   estM.data.get("idMateria") as String;
+                                                               var estado: EstadoMateria =
+                                                                   EstadoMateria.entries.get(
+                                                                       (estM.data.get(
+                                                                           "estado"
+                                                                       ) as Number).toInt()
+                                                                   );
+                                                               var nota: Int =
+                                                                   (estM.data.get("nota") as Number).toInt();
+
+                                                               Log.d(
+                                                                   "Materia",
+                                                                   "Id: $idMateria, Estado: $estado, Nota: $nota"
+                                                               )
+
+                                                               Snackbar.make(
+                                                                   this.v,
+                                                                   "PersonaMateria: ${idMateria}",
+                                                                   Snackbar.LENGTH_LONG
+                                                               ).show();
+
+                                                               db.collection("Materias")
+                                                                   .whereEqualTo("id", idMateria)
+                                                                   .get()
+                                                                   .addOnSuccessListener { materia ->
+                                                                       for (m in materia) {
+
+                                                                           var nombre: String =
+                                                                               m.data.get("nombre") as String;
+                                                                           val nuevaMateria =
+                                                                               EstudianteMateria(
+                                                                                   nombre,
+                                                                                   estado,
+                                                                                   nota
+                                                                               )
+                                                                           this.listaMaterias.add(
+                                                                               nuevaMateria
+                                                                           )
+                                                                       }
+
+                                                                       if (listaMaterias.isNotEmpty()) {
+                                                                           this.adapter =
+                                                                               UsuarioMateriasAdapter(
+                                                                                   listaMaterias
+                                                                               ) { i ->
+                                                                                   Snackbar.make(
+                                                                                       v,
+                                                                                       "Click",
+                                                                                       Snackbar.LENGTH_LONG
+                                                                                   )
+                                                                                       .show();
+                                                                                   if (e != null) {
+                                                                                       val action =
+                                                                                           EstudianteMateriaListFragmentDirections.actionEstudianteMateriaListFragmentToEstudianteMateriaFragment(
+                                                                                               e.getListEstudianteMateria()[i]
+                                                                                           );
+                                                                                       findNavController().navigate(
+                                                                                           action
+                                                                                       );
+                                                                                   }
+                                                                               }
+                                                                           this.lista.layoutManager =
+                                                                               LinearLayoutManager(context)
+                                                                           this.lista.adapter = adapter
+                                                                       } else {
+                                                                           Snackbar.make(
+                                                                               v,
+                                                                               "No hay datos de materias validos",
+                                                                               Snackbar.LENGTH_LONG
+                                                                           ).show()
+                                                                       }
 
 
-                //Encontrar usuario de la base
-                var document = personas.find { p ->
-                    p.id == e.getIdPersona()
-                }
 
-                if (document != null) {
-                    this.dni.text = document.data.get("dni") as String
-                    var dniPersona = this.dni.text as String
-                    this.nombreCompleto.text = document.data.get("nombre") as String
-                    var nombre = this.nombreCompleto.text as String
-                    var apellido = document.data.get("apellido") as String
-                    var fechaNacimiento = (document.data?.get("fechaDeNacimiento") as Timestamp).toDate()
-                    if(this.dni != null && this.nombreCompleto != null && apellido != null && fechaNacimiento != null){
-                        this.personaAux = Persona(e.getIdPersona(), dniPersona, nombre, apellido, fechaNacimiento)
-                    }
-                } else {
-                    Log.e("Error de firestore", "Persona no encontrada")
-                }
+                                                                       Snackbar.make(
+                                                                           this.v,
+                                                                           "Materia: ${idMateria}",
+                                                                           Snackbar.LENGTH_LONG
+                                                                       ).show();
+                                                                   }
+                                                           }
+                                                       }
+                                                   db.collection("Usuarios")
+                                                       .whereEqualTo("idPersona", personaAux.getIdPersona())
+                                                       .get()
+                                                       .addOnSuccessListener { result ->
+                                                           for (document in result) {
+                                                               this.email.text =
+                                                                   document.data.get("email") as String
+                                                           }
+                                                       }
+                                               }
+                                           } else {
+                                               Log.e("Estudiante", "no se encontro al estudiante")
+                                           }
 
-                if (personaAux != null) {
-                    db.collection("EstudianteMateria")
-                        .whereEqualTo("idPersona", personaAux.getIdPersona())
-                        .get()
-                        .addOnSuccessListener { result ->
-                            for (estM in result) {
-
-                                var idMateria: String = estM.data.get("idMateria") as String;
-                                var estado: EstadoMateria =
-                                    EstadoMateria.entries.get((estM.data.get("estado") as Number).toInt());
-                                var nota: Int = (estM.data.get("nota") as Number).toInt();
-
-                                Log.d("Materia", "Id: $idMateria, Estado: $estado, Nota: $nota")
-
-                                Snackbar.make(
-                                    this.v,
-                                    "PersonaMateria: ${idMateria}",
-                                    Snackbar.LENGTH_LONG
-                                ).show();
-
-                                db.collection("Materias")
-                                    .whereEqualTo("id", idMateria)
-                                    .get()
-                                    .addOnSuccessListener { materia ->
-                                        for (m in materia){
-
-                                            var nombre: String = m.data.get("nombre") as String;
-                                            val nuevaMateria = EstudianteMateria(nombre, estado, nota)
-                                            this.listaMaterias.add(nuevaMateria)
-                                        }
-
-                                            if (listaMaterias.isNotEmpty()) {
-                                                this.adapter = UsuarioMateriasAdapter(
-                                                    listaMaterias
-                                                ) { i ->
-                                                    Snackbar.make(v, "Click", Snackbar.LENGTH_LONG)
-                                                        .show();
-                                                    val action =
-                                                        EstudianteMateriaListFragmentDirections.actionEstudianteMateriaListFragmentToEstudianteMateriaFragment(
-                                                            e.getListEstudianteMateria()[i]
-                                                        );
-                                                    findNavController().navigate(action);
-                                                }
-                                                this.lista.layoutManager = LinearLayoutManager(context)
-                                                this.lista.adapter = adapter
-                                            } else {
-                                                Snackbar.make(
-                                                    v,
-                                                    "No hay datos de materias validos",
-                                                    Snackbar.LENGTH_LONG
-                                                ).show()
-                                            }
+                                       }
+                                   }
+                                       }
+                                   }
 
 
-
-                                        Snackbar.make(
-                                            this.v,
-                                            "Materia: ${idMateria}",
-                                            Snackbar.LENGTH_LONG
-                                        ).show();
-                                    }
-                            }
-                        }
-                    db.collection("Usuarios")
-                        .whereEqualTo("idPersona", personaAux.getIdPersona())
-                        .get()
-                        .addOnSuccessListener { result ->
-                            for (document in result){
-                                this.email.text = document.data.get("email") as String
-                            }
-                        }
-                }
-            }
+                           .addOnFailureListener { exception ->
+                               Log.e("UsuarioFragment", "Error al obtener las personas", exception)
+                           }
     }
 
 
@@ -228,5 +286,10 @@ class UsuarioFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(UsuarioViewModel::class.java)
     }
 }
