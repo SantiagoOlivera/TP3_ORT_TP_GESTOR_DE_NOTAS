@@ -16,6 +16,8 @@ import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
+import com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.UsuarioFragment
+import com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.UsuarioFragmentDirections
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.EstudianteFragment
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.EstudianteFragmentDirections
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.EstudianteListFragment
@@ -77,6 +79,8 @@ class EstudianteMateriaListFragment : Fragment() {
                 action = EstudianteFragmentDirections.actionEstudianteFragmentToEstudianteMateriaFragment(em);
             }else if(parentFragment is TabsEstudianteMateriaListFragment){
                 action = TabsEstudianteMateriaListFragmentDirections.actionTabsEstudianteMateriaListFragmentToEstudianteMateriaFragment(em);
+            } else if(parentFragment is UsuarioFragment){
+                action = UsuarioFragmentDirections.actionUsuarioFragmentToEstudianteMateriaFragment(em);
             }
 
 
