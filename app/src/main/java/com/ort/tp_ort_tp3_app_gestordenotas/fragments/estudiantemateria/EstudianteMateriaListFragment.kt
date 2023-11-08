@@ -6,18 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
-import com.ort.tp_ort_tp3_app_gestordenotas.EstudianteActivity
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.adapters.EstudianteMateriaAdapter
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
-import com.ort.tp_ort_tp3_app_gestordenotas.repositories.UsuariosRepository
+import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.EstudianteFragment
+import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.EstudianteFragmentDirections
+import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.EstudianteListFragment
 
 class EstudianteMateriaListFragment : Fragment() {
 
@@ -66,13 +67,23 @@ class EstudianteMateriaListFragment : Fragment() {
 
 
         this.adapter = EstudianteMateriaAdapter(
-            listEstudianteMateria,
-            { i ->
-                Snackbar.make(v, "Click", Snackbar.LENGTH_LONG).show();
-                val action = EstudianteMateriaListFragmentDirections.actionEstudianteMateriaListFragmentToEstudianteMateriaFragment(e.getListEstudianteMateria()[i]);
-                findNavController().navigate(action);
+            listEstudianteMateria
+        ) { i ->
+            //Snackbar.make(v, "Click Estudiante Materia", Snackbar.LENGTH_LONG).show();
+            val em: EstudianteMateria = listEstudianteMateria[i];
+
+            var action: NavDirections? = null;
+            if(parentFragment is EstudianteFragment){
+                action = EstudianteFragmentDirections.actionEstudianteFragmentToEstudianteMateriaFragment(em);
+            }else if(parentFragment is TabsEstudianteMateriaListFragment){
+                action = TabsEstudianteMateriaListFragmentDirections.actionTabsEstudianteMateriaListFragmentToEstudianteMateriaFragment(em);
             }
-        );
+
+
+            if (action != null) {
+                findNavController().navigate(action)
+            };
+        };
 
         this.recycler.layoutManager = LinearLayoutManager(context);
         this.recycler.adapter = this.adapter;

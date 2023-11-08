@@ -30,6 +30,9 @@
         <argument
             android:name="estudiante"
             app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante" />
+        <action
+            android:id="@+id/action_estudianteFragment_to_estudianteMateriaFragment"
+            app:destination="@id/estudianteMateriaFragment" />
     </fragment>
     <fragment
         android:id="@+id/inicioAdministradorPageFragment"
@@ -45,5 +48,18 @@
         android:id="@+id/tabsEstudianteMateriaListFragment"
         android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria.TabsEstudianteMateriaListFragment"
         android:label="fragment_tabs_estudiante_materia_list"
-        tools:layout="@layout/fragment_tabs_estudiante_materia_list" />
+        tools:layout="@layout/fragment_tabs_estudiante_materia_list" >
+        <action
+            android:id="@+id/action_tabsEstudianteMateriaListFragment_to_estudianteMateriaFragment"
+            app:destination="@id/estudianteMateriaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/estudianteMateriaFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria.EstudianteMateriaFragment"
+        android:label="fragment_estudiante_materia"
+        tools:layout="@layout/fragment_estudiante_materia" >
+        <argument
+            android:name="estudianteMateria"
+            app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria" />
+    </fragment>
 </navigation>
