@@ -1,41 +1,34 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ort.tp_ort_tp3_app_gestordenotas.EstudianteActivity
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
-import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
-import com.ort.tp_ort_tp3_app_gestordenotas.entities.Persona
-import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
 import com.ort.tp_ort_tp3_app_gestordenotas.factories.Factory
 import kotlinx.coroutines.launch
 
-class UsuarioViewModel: ViewModel(){
+class UsuarioViewModel : ViewModel() {
+    // TODO: Implement the ViewModel
+    val estudiante: MutableLiveData<Estudiante> = MutableLiveData<Estudiante>()
+    val estudianteABuscar: MutableLiveData<Estudiante> = MutableLiveData<Estudiante>()
+    fun getUsuario(idUsuario:String) {
+        var factory: Factory = Factory();
+        viewModelScope.launch {
+            estudiante.value = factory.getEstudiante(idUsuario);
+        }
 
+    }
 
-    var factory: Factory = Factory()
-    private lateinit var estudiante: Estudiante
-    private val estudianteLiveData = MutableLiveData<Estudiante>()
-
-     fun getEstudiante(id: String): LiveData<Estudiante>{
+     fun getEstudiante(idUsuario: String) {
+        var factory: Factory = Factory()
 
         viewModelScope.launch {
-            try {
-                val estudianteResult = factory.getUsuario(id) as? Estudiante
-                if(estudianteResult != null) {
-                    estudiante = estudianteResult
-                    estudianteLiveData.postValue(estudiante)
-                }else {
-                    Log.e("UsuarioViewModel", "estudianteResult es null")
-                }
-            }catch (e: Exception){
-                Log.e("UsuarioViewModel", "error al obtener el estudiante", e)
-            }
-
-
+            estudianteABuscar.value = factory.getEstudiante(idUsuario)
         }
-        return estudianteLiveData
+
+
+    //return factory.getEstudiante(idUsuario)
     }
 }

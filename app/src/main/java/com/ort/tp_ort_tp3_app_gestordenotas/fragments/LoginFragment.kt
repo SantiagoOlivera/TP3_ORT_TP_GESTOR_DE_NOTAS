@@ -100,10 +100,11 @@ class LoginFragment : Fragment() {
                 //Pantalla para estudiantes
                 intent = Intent(parentFragment?.activity as MainActivity, EstudianteActivity::class.java)
 
-                intent.putExtra("usuario", u.getUsuario());
-                intent.putExtra("email", u.getEmail());
-                intent.putExtra("password", u.getPassword());
-                intent.putExtra("idPersona", u.getIdPersona());
+                intent.putExtra("idUsuario", u.getId());
+                //intent.putExtra("usuario", u.getUsuario());
+                //intent.putExtra("email", u.getEmail());
+                //intent.putExtra("password", u.getPassword());
+                //intent.putExtra("idPersona", u.getIdPersona());
 
                 Snackbar.make(this.v, "${u.getUsuario()}", Snackbar.LENGTH_LONG).show();
 

@@ -35,8 +35,8 @@ class EstudianteMateriaInscriptoFragment : Fragment() {
         //this.recycler = v.findViewById(R.id.RecyclerViewEstudianteMateriasInscriptoList);
 
         val estudianteActivity: EstudianteActivity = parentFragment?.activity as EstudianteActivity;
-        val e: Estudiante = estudianteActivity.getEstudiante();
-        this.usuario = e;
+        //val e: Estudiante = estudianteActivity.getEstudiante();
+        //this.usuario = e;
 
         return this.v;
     }

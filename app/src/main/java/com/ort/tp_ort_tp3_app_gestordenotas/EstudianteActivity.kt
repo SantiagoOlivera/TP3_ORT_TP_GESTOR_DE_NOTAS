@@ -15,6 +15,8 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.ort.tp_ort_tp3_app_gestordenotas.adapters.ViewPagerAdapter
+import com.ort.tp_ort_tp3_app_gestordenotas.databinding.ActivityEstudianteBinding
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstadoMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
@@ -40,39 +42,48 @@ class EstudianteActivity : AppCompatActivity() {
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var v: View
-    private lateinit var estudiante: Estudiante;
     private lateinit var personaId: String
     private lateinit var descripcion: String
     private lateinit var nombreMateria: String
     private lateinit var anioMateria: AnioMateria
     private lateinit var factory: Factory;
+    private lateinit var idUsuario: String;
+    private lateinit var binding: ActivityEstudianteBinding
 
 
-    fun getEstudiante(): Estudiante {
-        return this.estudiante;
+
+
+    fun getIdUsuario(): String {
+        return this.idUsuario;
     }
-    fun getPersona() {
 
+    override fun onStart() {
+        super.onStart();
+        var idUsuario: String = intent.getStringExtra("idUsuario") as String;
+        this.idUsuario = idUsuario;
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_estudiante);
 
-
+        //Factory
         this.factory = Factory();
 
+        //View
         this.v = findViewById(android.R.id.content);
 
 
         this.navHostFragment =
             supportFragmentManager.findFragmentById(R.id.estudiante_navgraph) as NavHostFragment;
-        this.bottomNavView = findViewById(R.id.bottom_bar);
 
+        //Navigation bottom bar
+        this.navHostFragment = supportFragmentManager.findFragmentById(R.id.estudiante_navgraph) as NavHostFragment;
+        this.bottomNavView = findViewById(R.id.bottom_bar);
         NavigationUI.setupWithNavController(this.bottomNavView, this.navHostFragment.navController);
 
 
-        var usuario: String? = intent.getStringExtra("usuario") ?: "";
+       /* var usuario: String? = intent.getStringExtra("usuario") ?: "";
         var email: String? = intent.getStringExtra("email") ?: "";
         var password: String? = intent.getStringExtra("password") ?: "";
         this.personaId = intent.getStringExtra("idPersona") ?: "";
@@ -87,35 +98,13 @@ class EstudianteActivity : AppCompatActivity() {
             );
         } else {
             Log.e("Error", "campo invalido")
-        }
-        //aca
+        }*/
+
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    override fun onStart() {
-        super.onStart();
-
-        var view: View = this.v;
-        Snackbar.make(this.v, "Estudiante", Snackbar.LENGTH_LONG).show();
-
-                    var m: Materia? = null;
-
-                    val parentJob = Job();
-                    val scope: CoroutineScope = CoroutineScope(Dispatchers.Default + parentJob);
-
-                    scope.launch {
-                        var materias: MutableList<Materia>? = factory.getListMaterias();
-                        //var estudiantes: MutableList<Estudiante>? = factory.getEstudiantes();
-                        //Snackbar.make(view, "Est: ${estudiantes?.get(0)?.getPersona()?.getNombreCompleto()}", Snackbar.LENGTH_LONG).show();
-                        val e: Estudiante? = factory.getEstudiante("egiKhZztEGpYKB3AcZbO");
-                        //Snackbar.make(this.v, "RESULT: ${nombre}", Snackbar.LENGTH_LONG).show();
-                    }
-
-                }
-
         }
-        private suspend fun getMateria(idMateria: String): Materia? {
+        /*private suspend fun getMateria(idMateria: String): Materia? {
             var ret: Materia? = null;
             val db = Firebase.firestore;
 
@@ -141,7 +130,7 @@ class EstudianteActivity : AppCompatActivity() {
             //}
 
             return ret;
-        }
+        }*/
 
 
 
