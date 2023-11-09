@@ -11,7 +11,7 @@ import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria.EstudianteMateriaListFragment
 
 class ViewPagerAdapter(
-    fragmentActivity: Fragment, private val data: ArrayList<String>) : FragmentStateAdapter(fragmentActivity) {
+    fragmentActivity: Fragment, private val data: ArrayList<String>, private val e: Estudiante) : FragmentStateAdapter(fragmentActivity) {
     override fun getItemCount(): Int {
         return this.data.size;
     }
@@ -19,6 +19,7 @@ class ViewPagerAdapter(
         val fragment: Fragment = EstudianteMateriaListFragment();
         val bundle = Bundle();
         bundle.putString("key", data[position]);
+        bundle.putParcelable("estudiante", e);
         fragment.arguments = bundle;
         return fragment;
     }

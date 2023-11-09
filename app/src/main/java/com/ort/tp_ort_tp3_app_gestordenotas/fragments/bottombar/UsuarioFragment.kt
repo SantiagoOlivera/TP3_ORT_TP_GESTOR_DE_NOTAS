@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import androidx.lifecycle.Observer
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.ort.tp_ort_tp3_app_gestordenotas.EstudianteActivity
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.google.firebase.firestore.ktx.firestore
@@ -23,6 +26,7 @@ import com.google.firebase.ktx.Firebase
 import com.ort.tp_ort_tp3_app_gestordenotas.adapters.UsuarioMateriasAdapter
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstadoMateria
+import com.ort.tp_ort_tp3_app_gestordenotas.adapters.ViewPagerAdapter
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Materia
@@ -42,20 +46,24 @@ import java.util.Date
 
 
 class UsuarioFragment : Fragment() {
+
     // TODO: Rename and change types of parameters
     private lateinit var v: View;
+    //private lateinit var txtUsuario: TextView
     private lateinit var nombreCompleto: TextView
     private lateinit var email: TextView
     private lateinit var dni: TextView
     private lateinit var lista: RecyclerView
+    private lateinit var adapterPager: ViewPagerAdapter;
+    private lateinit var tabData: ArrayList<String>;
+    private lateinit var tabTitle: ArrayList<String>;
+    private lateinit var estudiante: Estudiante;
     private lateinit var viewModel: UsuarioViewModel
     private lateinit var carrera: TextView
     private lateinit var sede: TextView
     private lateinit var adapter: UsuarioMateriasAdapter
     private lateinit var listaMaterias: MutableList<EstudianteMateria>
     private lateinit var factory: Factory
-    private lateinit var e: Estudiante
-    private lateinit var pers: Persona
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,60 +81,19 @@ class UsuarioFragment : Fragment() {
         return v
     }
 
-    private fun initDataEstudiante(e: Estudiante){
-        //this.txtUsuario.text = e?.getUsuario();
-        this.email.text = e?.getEmail();
-        this.nombreCompleto.text = e?.getPersona()?.getNombreCompleto();
-        this.dni.text = e?.getPersona()?.getDNI();
+    companion object {
+        fun newInstance() = UsuarioFragment()
     }
 
-    private fun initMateriasEstudiante(e: Estudiante){
-        var listaMaterias: MutableList<EstudianteMateria> = e.getListEstudianteMateriasInscripto()
 
-        if(listaMaterias.isNotEmpty()){
-            this.adapter = UsuarioMateriasAdapter(listaMaterias) { i ->
-                Snackbar.make(
-                    v,
-                    "Click",
-                    Snackbar.LENGTH_LONG
-                )
-                    .show();
-                if (e != null) {
-                    val action =
-                        EstudianteMateriaListFragmentDirections.actionEstudianteMateriaListFragmentToEstudianteMateriaFragment(
-                            e.getListEstudianteMateria()[i]
-                        );
-                    findNavController().navigate(
-                        action
-                    );
-                }
-            }
-        }else {
-            Snackbar.make(
-                v,
-                "No hay datos de materias validos",
-                Snackbar.LENGTH_LONG
-            ).show()
-        }
-    }
-
-    private fun getEstudiante() {
-        viewModel.estudiante.observe(viewLifecycleOwner, Observer { e ->
-            this.initDataEstudiante(e);
-            this.initMateriasEstudiante(e)
-        });
-    }
 
     override fun onStart() {
         super.onStart()
         this.carrera.text = "ASC"
         this.sede.text = "Almagro"
         factory = Factory();
-        val localDate = LocalDate.of(2000, 1, 1)
-        val date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
-        val persInit: Persona = Persona("","","", date)
-        this.pers = persInit
         val db = Firebase.firestore
+
 
         var estudianteActivity: EstudianteActivity = parentFragment?.activity as EstudianteActivity;
         val idUsuario: String = estudianteActivity.getIdUsuario();
@@ -137,9 +104,48 @@ class UsuarioFragment : Fragment() {
 
     }
 
+    private fun initTabs() {
 
-    companion object {
-        fun newInstance() = UsuarioFragment()
+        var tabsLayout: TabLayout? = this.v?.findViewById(R.id.tabsLayout);
+        var viewPager: ViewPager2? = this.v?.findViewById(R.id.viewPager);
+
+
+        //Inicia tabs data parametro para filtrar lista y titulo
+        this.tabTitle = ArrayList<String>();
+        this.tabData = ArrayList<String>();
+        this.tabTitle.add("Inscripto");
+        this.tabData.add("-1");
+        for(am in AnioMateria.entries){
+            this.tabTitle.add(am.getText());
+            this.tabData.add(am.ordinal.toString());
+        }
+
+        this.adapterPager = ViewPagerAdapter(this, this.tabData, this.estudiante);
+
+        if (viewPager != null) {
+            viewPager.adapter = this.adapterPager;
+        };
+
+        if (tabsLayout != null && viewPager != null) {
+            TabLayoutMediator(tabsLayout, viewPager, { tab, position ->
+                tab.text = this.tabTitle.get(position);
+            }).attach();
+        };
+    }
+
+    private fun initDataEstudiante(e: Estudiante){
+        //this.txtUsuario.text = e?.getUsuario();
+        this.email.text = e?.getEmail();
+        this.nombreCompleto.text = e?.getPersona()?.getNombreCompleto();
+        this.dni.text = e?.getPersona()?.getDNI();
+    }
+
+    private fun getEstudiante() {
+        viewModel.estudiante.observe(viewLifecycleOwner, Observer { e ->
+            this.estudiante = e;
+            this.initDataEstudiante(e);
+            this.initTabs();
+        });
     }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

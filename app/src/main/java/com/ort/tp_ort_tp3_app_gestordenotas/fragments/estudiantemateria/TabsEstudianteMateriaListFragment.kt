@@ -12,6 +12,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.adapters.ViewPagerAdapter
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
+import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
+import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
+import com.ort.tp_ort_tp3_app_gestordenotas.repositories.UsuariosRepository
 
 class TabsEstudianteMateriaListFragment : Fragment() {
 
@@ -40,6 +43,9 @@ class TabsEstudianteMateriaListFragment : Fragment() {
 
     private fun initTabs() {
 
+        var usuarios: List<Usuario> = UsuariosRepository.getUsuarios();
+        var usuario: Estudiante = usuarios[0] as Estudiante;
+
         var tabsLayout: TabLayout? = this.v?.findViewById(R.id.tabsLayout);
         var viewPager: ViewPager2? = this.v?.findViewById(R.id.viewPager);
 
@@ -47,12 +53,16 @@ class TabsEstudianteMateriaListFragment : Fragment() {
         //Inicia tabs data parametro para filtrar lista y titulo
         this.tabTitle = ArrayList<String>();
         this.tabData = ArrayList<String>();
+        this.tabTitle.add("Inscripto");
+        this.tabData.add("-1");
         for(am in AnioMateria.entries){
             this.tabTitle.add(am.getText());
             this.tabData.add(am.ordinal.toString());
         }
 
-        this.adapter = ViewPagerAdapter(this, this.tabData);
+
+
+        this.adapter = ViewPagerAdapter(this, this.tabData, usuario);
 
         if (viewPager != null) {
             viewPager.adapter = this.adapter;
