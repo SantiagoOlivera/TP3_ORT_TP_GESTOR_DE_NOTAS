@@ -74,7 +74,7 @@ class UsuarioFragment : Fragment() {
         nombreCompleto = v.findViewById(R.id.NombreUsuario)
         email = v.findViewById(R.id.emailId)
         dni = v.findViewById(R.id.dniId)
-        lista = v.findViewById(R.id.materiasPerfil)
+        //lista = v.findViewById(R.id.materiasPerfil)
         carrera = v.findViewById(R.id.asc)
         sede = v.findViewById(R.id.almagro)
         listaMaterias = mutableListOf()
