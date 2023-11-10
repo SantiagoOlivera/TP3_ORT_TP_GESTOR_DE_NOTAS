@@ -31,21 +31,24 @@ class EstudianteMateriaAdapter(
             txtNota.text = nota.toString();
         }
 
-        fun setEstadoMateria(estado: EstadoMateria){
+        fun setEstadoMateria(estado: EstadoMateria, nota: Int){
             var txtEstadoMateria: TextView = view.findViewById(R.id.txtEstado);
             var text: String = "";
             var color: Int = Color.BLACK;
 
-            if( estado == EstadoMateria.PENDIENTE){
+            if(nota == 0){
+                //estado == EstadoMateria.PENDIENTE
                 text = "PENDIENTE";
                 color = Color.BLUE;
             }else if( estado == EstadoMateria.EN_PROGRESO){
                 text = "EN PROGRESO";
                 color = Color.LTGRAY;
-            } else if( estado == EstadoMateria.APROBADA){
+            } else if(nota >= 7){
+                //estado == EstadoMateria.APROBADA
                 text = "APROBADA";
                 color = Color.GREEN;
-            } else if( estado == EstadoMateria.FINAL){
+            } else if(nota >= 4 && nota < 7){
+                //estado == EstadoMateria.FINAL
                 text = "FINAL";
                 color = Color.RED;
             }
@@ -74,7 +77,7 @@ class EstudianteMateriaAdapter(
 
         holder.setNombreMateria(this.materias[position].getMateria()!!.getNombre());
         holder.setNota(this.materias[position].getNota());
-        holder.setEstadoMateria(this.materias[position].getEstado());
+        holder.setEstadoMateria(this.materias[position].getEstado(), this.materias[position].getNota());
         holder.getCard().setOnClickListener{
             onClick(position);
         }

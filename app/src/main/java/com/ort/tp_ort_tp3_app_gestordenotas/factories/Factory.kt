@@ -1,8 +1,10 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.factories
 
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -284,11 +286,47 @@ class Factory {
                 "nota" to 0
             );
 
-            this.db.collection("EstudianteMateria")
+           val refEm = this.db.collection("EstudianteMateria")
                 .add(em)
                 .await()
+
+            val estudianteMateriaId = refEm.id
+            val estudianteMateriaIdRef = this.db.collection("EstudianteMateria")
+                .document(estudianteMateriaId)
+
+            if(estudianteMateriaId != null) {
+                val notasParciales = estudianteMateriaIdRef.collection("Parciales")
+
+                val Parcial1 = hashMapOf(
+                    "notaParcial1" to 0
+                );
+                val Parcial2 = hashMapOf(
+                    "notaParcial2" to 0
+                );
+                val notaParcial1Ref = notasParciales.add(Parcial1)
+                val notaParcial2Ref = notasParciales.add(Parcial2)
+
+            }else {
+                Log.e("Factory", "Error al agregar collection parciales")
+            }
         }
     }
+
+    /*suspend fun setParciales(em: EstudianteMateria) {
+        val estudianteMateriaRef = db.collection("EstudianteMateria")
+        val estudianteMateriaDoc = estudianteMateriaRef.add(em).await()
+        val estudianteMateriaId = estudianteMateriaDoc.id
+        val estudianteMateriaIdRef = estudianteMateriaRef.document(estudianteMateriaId)
+        val notasParciales = estudianteMateriaDoc.collection("Parciales")
+        val notaAlumnoParcial1 = hashMapOf(
+            "notaParcial1" to 0
+        );
+        val notaAlumnoParcial2 = hashMapOf(
+            "notaParcial2" to 0
+        )
+        val notaParcial1Ref = notasParciales.add(notaAlumnoParcial1)
+        val notaParcial2Ref = notasParciales.add(notaAlumnoParcial2)
+    }*/
 
     suspend fun setAllMaterias() {
         var data: MutableList<Materia> = UsuariosRepository.getMaterias();
