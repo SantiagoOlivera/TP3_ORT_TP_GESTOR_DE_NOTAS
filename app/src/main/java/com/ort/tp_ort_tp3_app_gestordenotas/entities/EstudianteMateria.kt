@@ -63,7 +63,7 @@ class EstudianteMateria() : Parcelable {
         this.idPersona = idPersona;
     }
 
-    private fun setNota(nota: Int){
+    fun setNota(nota: Int){
         this.nota = nota;
     }
 
