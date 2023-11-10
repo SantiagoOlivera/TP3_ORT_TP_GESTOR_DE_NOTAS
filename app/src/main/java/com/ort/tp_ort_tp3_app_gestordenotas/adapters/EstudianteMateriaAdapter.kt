@@ -1,12 +1,18 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.adapters
 
+import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstadoMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
@@ -73,6 +79,30 @@ class EstudianteMateriaAdapter(
         return this.materias.size;
     }
 
+    private fun mostrarMenuEmergente(
+        context: Context,
+        view: View,
+        nota1: String,
+        nota2: String
+    ){
+        val popupMenu = PopupMenu(context, view)
+        popupMenu.menuInflater.inflate(R.menu.menu_materia_perfil, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when(menuItem!!.itemId){
+                R.id.parcial1 -> {
+                    Toast.makeText(context, "Nota 1: $nota1", Toast.LENGTH_SHORT).show()
+                }
+                R.id.parcial2 -> {
+                    Toast.makeText(context, "Nota 2: $nota2", Toast.LENGTH_SHORT).show()
+                }
+                else -> false
+            }
+            true
+        }
+        popupMenu.show()
+    }
+
     override fun onBindViewHolder(holder: EstudianteMateriaHolder, position: Int) {
 
         holder.setNombreMateria(this.materias[position].getMateria()!!.getNombre());
@@ -81,6 +111,48 @@ class EstudianteMateriaAdapter(
         holder.getCard().setOnClickListener{
             onClick(position);
         }
+
+        val db = Firebase.firestore
+
+        val e = this.materias[position].getEstudiante()
+        val idPers = e?.getPersona()?.getIdPersona()
+
+         db.collection("EstudianteMateria")
+            .whereEqualTo("idPersona", idPers)
+            .get()
+             .addOnSuccessListener { documents ->
+                 for (result in documents){
+                     val idEm = result.id
+
+                     val documentRef = db.collection("EstudianteMateria").document(idEm)
+                     val parciales = documentRef.collection("Parciales")
+
+                     parciales
+                         .get()
+                         .addOnSuccessListener { documentos ->
+                             for (d in documentos){
+                                 val datos = d.data
+                                 val nota1 = datos["notaParcial1"].toString()
+                                 val nota2 = datos["notaParcial2"].toString()
+
+                                 holder.itemView.setOnClickListener {
+                                     mostrarMenuEmergente(
+                                         holder.itemView.context,
+                                         holder.itemView,
+                                         nota1,
+                                         nota2
+                                     )
+                                 }
+                             }
+                         }
+                         .addOnFailureListener { e ->
+                             Log.e("EstudianteMateriaAdapter", "Error al encontrar los parciales", e)
+                         }
+                 }
+             }
+             .addOnFailureListener{excepcion ->
+                 Log.e("EstudianteMateriaAdapter", "Error al encontrar el estudianteMateria", excepcion)
+             }
     }
 
 }

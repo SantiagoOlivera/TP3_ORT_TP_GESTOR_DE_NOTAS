@@ -312,22 +312,6 @@ class Factory {
         }
     }
 
-    /*suspend fun setParciales(em: EstudianteMateria) {
-        val estudianteMateriaRef = db.collection("EstudianteMateria")
-        val estudianteMateriaDoc = estudianteMateriaRef.add(em).await()
-        val estudianteMateriaId = estudianteMateriaDoc.id
-        val estudianteMateriaIdRef = estudianteMateriaRef.document(estudianteMateriaId)
-        val notasParciales = estudianteMateriaDoc.collection("Parciales")
-        val notaAlumnoParcial1 = hashMapOf(
-            "notaParcial1" to 0
-        );
-        val notaAlumnoParcial2 = hashMapOf(
-            "notaParcial2" to 0
-        )
-        val notaParcial1Ref = notasParciales.add(notaAlumnoParcial1)
-        val notaParcial2Ref = notasParciales.add(notaAlumnoParcial2)
-    }*/
-
     suspend fun setAllMaterias() {
         var data: MutableList<Materia> = UsuariosRepository.getMaterias();
         for(m in data) {

@@ -93,13 +93,10 @@ class UsuarioMateriasAdapter(
 
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when(menuItem!!.itemId){
-                R.id.materia1 ->{
+                R.id.parcial1 ->{
                     Toast.makeText(context, menuItem.title, Toast.LENGTH_SHORT).show()
                 }
-                R.id.materia2 ->{
-                    Toast.makeText(context, menuItem.title, Toast.LENGTH_SHORT).show()
-                }
-                R.id.materia3 ->{
+                R.id.parcial2 ->{
                     Toast.makeText(context, menuItem.title, Toast.LENGTH_SHORT).show()
                 }
                 else -> false
