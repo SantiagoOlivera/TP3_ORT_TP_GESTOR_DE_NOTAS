@@ -36,7 +36,7 @@ class EstudianteMateriaFragment : Fragment() {
     override fun onStart() {
         super.onStart();
         val em: EstudianteMateria = EstudianteMateriaFragmentArgs.fromBundle(requireArguments()).estudianteMateria;
-        this.txtNombreMateria.text = "Materia seleccionada: ${ em.getMateria().getNombre() } ";
+        this.txtNombreMateria.text = "Materia seleccionada: ${ em.getMateria()?.getNombre() }, Estudiante: ${ em.getEstudiante()?.getPersona()?.getNombreCompleto() }, Nota: ${em.getNota()}";
 
     }
 

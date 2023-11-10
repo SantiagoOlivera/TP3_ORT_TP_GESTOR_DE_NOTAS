@@ -55,7 +55,11 @@ class Persona {
         return this.idPersona;
     }
 
-    private fun setIdPersona(idPersona: String){
+    fun getFechaDeNacimiento(): Date{
+        return this.fechaDeNacimiento;
+    }
+
+    fun setIdPersona(idPersona: String){
         this.idPersona = idPersona;
     }
 
@@ -78,5 +82,6 @@ class Persona {
     private fun setFechaDeNacimiento(fechaDeNacimiento: Date){
         this.fechaDeNacimiento = fechaDeNacimiento;
     }
+
 
 }

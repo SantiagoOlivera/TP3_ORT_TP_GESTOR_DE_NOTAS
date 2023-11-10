@@ -8,10 +8,15 @@
             android:title="Estudiantes"
             />
         <item
-            android:id="@+id/usuarioFragment"
+            android:id="@+id/agregarEstudianteFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:title="Agregar estudiante"
             />
+        <item
+            android:id="@+id/tabsEstudianteMateriaListFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="Tabs" />
     </group>
 </menu>

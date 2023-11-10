@@ -5,6 +5,7 @@ class Estudiante : Usuario {
     private lateinit var materias: MutableList<EstudianteMateria>
     private var promedioMaterias: Double = 0.0
 
+
     constructor(
         usuario: String,
         email: String,
@@ -23,9 +24,23 @@ class Estudiante : Usuario {
         this.initMaterias();
     }
 
+    fun getListMateriaPorAnio(anioMateria: AnioMateria): MutableList<EstudianteMateria>{
+        var ret: MutableList<EstudianteMateria> = this.materias.filter {
+                m -> m.getMateria()?.getAnioMateria() == anioMateria;
+        }.toMutableList();
+        return ret;
+    }
 
     fun getListEstudianteMateria(): MutableList<EstudianteMateria> {
         return this.materias;
+    }
+
+    fun getListEstudianteMateriasInscripto(): MutableList<EstudianteMateria> {
+        var ret : MutableList<EstudianteMateria> = mutableListOf();
+        if(this.materias.count() > 0){
+            ret = this.materias.filter { em -> em.getIsInscripto() }.toMutableList();
+        }
+        return ret;
     }
 
     private fun calcPromedio(){
@@ -69,5 +84,6 @@ class Estudiante : Usuario {
     private fun setPromedioMaterias(promedioMaterias: Double){
         this.promedioMaterias = promedioMaterias
     }
+
 
 }
