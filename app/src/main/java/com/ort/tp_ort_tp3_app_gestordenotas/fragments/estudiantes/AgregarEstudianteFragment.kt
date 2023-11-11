@@ -12,6 +12,7 @@ import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Timestamp
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstadoMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
@@ -68,7 +69,6 @@ class AgregarEstudianteFragment : Fragment() {
             var e: Estudiante = getEstudiante();
             this.viewModel.guardarEstudiante(e);
             this.guardarEstudiante();
-
         }
     }
 
@@ -89,9 +89,14 @@ class AgregarEstudianteFragment : Fragment() {
         var apellido: String = this.inputApellido.text.toString().trim();
         var nombre: String = this.inputNombre.text.toString().trim();
         var password: String = this.inputPassword.text.toString().trim();
-        var fechaDeNacimiento: String = this.inputFechaDeNacimiento.text.toString();
+        var fechaDeNacimiento: String = this.inputFechaDeNacimiento.text.toString().trim();
 
-        var fn: Date = Date(1991, 10,4,);
+        var splitfn: List<String> = fechaDeNacimiento.split("/");
+        var dia: Int = splitfn[0].toInt();
+        var mes: Int = splitfn[1].toInt() - 1;
+        var anio: Int = splitfn[2].toInt() - 1900;
+
+        var fn: Date = Date(anio, mes, dia);
 
         var p: Persona = Persona(dni, nombre, apellido, fn);
         var email: String = "${nombre.replace(" ", "").toLowerCase()}.${apellido.replace(" ", "").toLowerCase()}@ort.edu.ar";
