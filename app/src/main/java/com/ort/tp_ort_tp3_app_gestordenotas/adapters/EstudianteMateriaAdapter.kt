@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -82,19 +83,26 @@ class EstudianteMateriaAdapter(
     private fun mostrarMenuEmergente(
         context: Context,
         view: View,
-        nota1: String,
-        nota2: String
+        nota1: Int,
+        nota2: Int
     ){
         val popupMenu = PopupMenu(context, view)
         popupMenu.menuInflater.inflate(R.menu.menu_materia_perfil, popupMenu.menu)
 
+        val parcial1Item = popupMenu.menu.findItem(R.id.parcial1)
+        val parcial2Item = popupMenu.menu.findItem(R.id.parcial2)
+
+        parcial1Item.title = "Nota Parcial 1: $nota1"
+        parcial2Item.title = "Nota Parcial 2: $nota2"
+
         popupMenu.setOnMenuItemClickListener { menuItem ->
+
             when(menuItem!!.itemId){
                 R.id.parcial1 -> {
-                    Toast.makeText(context, "Nota 1: $nota1", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Nota Parcial 1: $nota1", Toast.LENGTH_SHORT).show()
                 }
                 R.id.parcial2 -> {
-                    Toast.makeText(context, "Nota 2: $nota2", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Nota Parcial 2: $nota2", Toast.LENGTH_SHORT).show()
                 }
                 else -> false
             }
@@ -132,16 +140,23 @@ class EstudianteMateriaAdapter(
                          .addOnSuccessListener { documentos ->
                              for (d in documentos){
                                  val datos = d.data
-                                 val nota1 = datos["notaParcial1"].toString()
-                                 val nota2 = datos["notaParcial2"].toString()
 
-                                 holder.itemView.setOnClickListener {
-                                     mostrarMenuEmergente(
-                                         holder.itemView.context,
-                                         holder.itemView,
-                                         nota1,
-                                         nota2
-                                     )
+                                 val nota1 = datos["notaParcial1"].toString()?.toIntOrNull() ?: 0
+                                 val nota2 = datos["notaParcial2"].toString()?.toIntOrNull() ?: 0
+
+                                 Log.d("EstudianteMateriaAdapter", "datos: $datos, $nota1, $nota2")
+
+                                 if(nota1 != null && nota2 != null) {
+                                     holder.itemView.setOnClickListener {
+                                         mostrarMenuEmergente(
+                                             holder.itemView.context,
+                                             holder.itemView,
+                                             nota1,
+                                             nota2
+                                         )
+                                     }
+                                 }else {
+                                     Log.e("EstudianteMateriaAdapter", "nota1/nota2 da nulo")
                                  }
                              }
                          }

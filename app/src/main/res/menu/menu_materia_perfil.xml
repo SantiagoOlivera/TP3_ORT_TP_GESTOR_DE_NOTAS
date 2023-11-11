@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/parcial1"
-        android:title="Parcial 1" />
+        android:title="Nota Parcial 1" />
     <item
         android:id="@+id/parcial2"
-        android:title="Parcial 2" />
+        android:title="Nota Parcial 2" />
 </menu>
