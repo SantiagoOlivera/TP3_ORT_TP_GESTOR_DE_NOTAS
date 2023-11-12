@@ -61,5 +61,17 @@
         <argument
             android:name="estudianteMateria"
             app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria" />
+        <action
+            android:id="@+id/action_estudianteMateriaFragment_to_parcialesEstudianteMateriaEditFragment"
+            app:destination="@id/parcialesEstudianteMateriaEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/parcialesEstudianteMateriaEditFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria.ParcialesEstudianteMateriaEditFragment"
+        android:label="fragment_parciales_estudiante_materia_edit"
+        tools:layout="@layout/fragment_parciales_estudiante_materia_edit" >
+        <argument
+            android:name="estudianteMateria"
+            app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria" />
     </fragment>
 </navigation>

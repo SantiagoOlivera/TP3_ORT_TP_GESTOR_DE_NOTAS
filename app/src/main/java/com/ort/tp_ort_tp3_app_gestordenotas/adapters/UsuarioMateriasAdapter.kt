@@ -86,37 +86,13 @@ class UsuarioMateriasAdapter(
         return materias.size;
     }
 
-    private fun mostrarMenuEmergente(context: Context, view: View){
-
-        val popupMenu = PopupMenu(context, view)
-        popupMenu.menuInflater.inflate(R.menu.menu_materia_perfil, popupMenu.menu)
-
-        popupMenu.setOnMenuItemClickListener { menuItem ->
-            when(menuItem!!.itemId){
-                R.id.parcial1 ->{
-                    Toast.makeText(context, menuItem.title, Toast.LENGTH_SHORT).show()
-                }
-                R.id.parcial2 ->{
-                    Toast.makeText(context, menuItem.title, Toast.LENGTH_SHORT).show()
-                }
-                else -> false
-            }
-            true
-        }
-        popupMenu.show()
-    }
-
     override fun onBindViewHolder(holder: UsuarioMateriasHolder, position: Int) {
-        holder.setNombreCompleto(this.materias[position].getNombreMateria())
+        holder.setNombreCompleto(this.materias[position].getMateria()?.getNombre())
         holder.setNotaMateria(this.materias[position].getNota())
         holder.setEstadoMateria(this.materias[position].getEstado(), this.materias[position].getNota())
-        /*holder.getCard().setOnClickListener{
+        holder.getCard().setOnClickListener{
             onClick(position);
-        }*/
-        holder.itemView.setOnClickListener{
-            mostrarMenuEmergente(holder.itemView.context, holder.itemView)
         }
-
 
     }
 }

@@ -13,6 +13,7 @@ class EstudianteMateria(
 ) : Parcelable {
 
 
+    private var listaParciales: MutableList<Parcial> = mutableListOf()
     private var estudiante: Estudiante? = estudianteAux
     private var materia: Materia? = materiaAux
     private var nombreMateria: String? = nombreMateriaAux
@@ -41,6 +42,10 @@ class EstudianteMateria(
         this.setNombreMateria(nombreMateria)
         this.setEstado(estado);
         this.setNota(nota);
+    }
+
+    fun getListaParciales(): MutableList<Parcial> {
+        return this.listaParciales
     }
 
     fun getIsInscripto(): Boolean{

@@ -6,14 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 
 class EstudianteMateriaFragment : Fragment() {
 
-    lateinit var txtNombreMateria: TextView
     private lateinit var v: View;
+    private lateinit var txtNombreMateria: TextView
+    private lateinit var btnModificarNotaParcial: Button;
+    private lateinit var txtModificar: TextView
+    private lateinit var em: EstudianteMateria
+
 
     companion object {
         fun newInstance() = EstudianteMateriaFragment()
@@ -29,15 +35,23 @@ class EstudianteMateriaFragment : Fragment() {
         this.v = inflater.inflate(R.layout.fragment_estudiante_materia, container, false)
 
         this.txtNombreMateria = this.v.findViewById(R.id.txtNombreMateria);
+        this.btnModificarNotaParcial = this.v.findViewById(R.id.btnId)
+        this.txtModificar = this.v.findViewById(R.id.txtModificar)
+
 
         return this.v;
     }
 
     override fun onStart() {
         super.onStart();
-        val em: EstudianteMateria = EstudianteMateriaFragmentArgs.fromBundle(requireArguments()).estudianteMateria;
+        this.em = EstudianteMateriaFragmentArgs.fromBundle(requireArguments()).estudianteMateria;
         this.txtNombreMateria.text = "Materia seleccionada: ${ em.getMateria()?.getNombre() }, Estudiante: ${ em.getEstudiante()?.getPersona()?.getNombreCompleto() }, Nota: ${em.getNota()}";
+        this.txtModificar.text = "Modificar notas de: ${em.getEstudiante()?.getPersona()?.getNombreCompleto()}, de la materia: ${em.getMateria()?.getNombre()}"
 
+        this.btnModificarNotaParcial.setOnClickListener {
+            var action = EstudianteMateriaFragmentDirections.actionEstudianteMateriaFragmentToParcialesEstudianteMateriaEditFragment(this.em);
+            findNavController().navigate(action)
+        }
     }
 
 

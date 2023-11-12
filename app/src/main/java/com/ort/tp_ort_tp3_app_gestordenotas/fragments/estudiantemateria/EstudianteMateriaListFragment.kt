@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.adapters.EstudianteMateriaAdapter
+import com.ort.tp_ort_tp3_app_gestordenotas.adapters.UsuarioMateriasAdapter
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
@@ -30,7 +31,7 @@ class EstudianteMateriaListFragment : Fragment() {
 
     private lateinit var v: View;
     private lateinit var viewModel: EstudianteMateriaListViewModel
-    private lateinit var adapter: EstudianteMateriaAdapter;
+    private lateinit var adapter: UsuarioMateriasAdapter;
     private lateinit var usuario: Usuario;
     private lateinit var recycler: RecyclerView
     private lateinit var estudiante: Estudiante
@@ -68,7 +69,7 @@ class EstudianteMateriaListFragment : Fragment() {
         }
 
 
-        this.adapter = EstudianteMateriaAdapter(
+        this.adapter = UsuarioMateriasAdapter(
             listEstudianteMateria
         ) { i ->
             //Snackbar.make(v, "Click Estudiante Materia", Snackbar.LENGTH_LONG).show();

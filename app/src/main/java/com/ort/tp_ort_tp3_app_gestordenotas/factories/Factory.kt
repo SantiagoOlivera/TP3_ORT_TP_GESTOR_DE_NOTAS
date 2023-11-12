@@ -1,6 +1,8 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.factories
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
@@ -298,9 +300,11 @@ class Factory {
                 val notasParciales = estudianteMateriaIdRef.collection("Parciales")
 
                 val Parcial1 = hashMapOf(
+                    "numero" to 1,
                     "notaParcial1" to 0
                 );
                 val Parcial2 = hashMapOf(
+                    "numero" to 2,
                     "notaParcial2" to 0
                 );
                 val notaParcial1Ref = notasParciales.add(Parcial1)
@@ -328,6 +332,50 @@ class Factory {
                 .set(materia)
                 .await()
         }
+    }
+
+    suspend fun setNotaParial(em: EstudianteMateria, nota: Int, nroParcial: Int){
+
+        val e = em.getEstudiante()
+        val idPers = e?.getPersona()?.getIdPersona()
+        val idMateria = em.getMateria()?.getId()
+
+        this.db.collection("EstudianteMateria")
+            .whereEqualTo("idPersona", idPers)
+            .whereEqualTo("idMateria", idMateria)
+            .get()
+            .addOnSuccessListener { document ->
+                for (result in document){
+                    val idEm = result.id
+
+                    val documentRef = db.collection("EstudianteMateria").document(idEm)
+                    val parcialesRef = documentRef.collection("Parciales")
+
+                    parcialesRef
+                        .whereEqualTo("numero", nroParcial)
+                        .get()
+                        .addOnSuccessListener { documentos ->
+                            for (p in documentos){
+                                val datos = p.data
+                                val pId = p.id
+
+                                val documetoRef = parcialesRef.document(pId)
+
+                                if(nroParcial == 1){
+                                    documetoRef.update("notaParcial1", nota)
+                                    Log.e("Factory", "Se cargo bien la nota")
+                                }else if (nroParcial == 2) {
+                                    documetoRef.update("notaParcial2", nota)
+                                    Log.e("Factory", "Se cargo bien la nota")
+                                }else {
+                                    Log.e("Factory", "Error al ingresar el nro del parcial")
+                                }
+
+
+                            }
+                        }
+                }
+            }
     }
 
 }
