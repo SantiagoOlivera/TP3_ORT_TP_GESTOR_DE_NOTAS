@@ -59,9 +59,13 @@ class EstudianteActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart();
+    }
+
+    private fun setIdUsuario() {
         var idUsuario: String = intent.getStringExtra("idUsuario") as String;
         this.idUsuario = idUsuario;
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +86,8 @@ class EstudianteActivity : AppCompatActivity() {
         this.bottomNavView = findViewById(R.id.bottom_bar);
         NavigationUI.setupWithNavController(this.bottomNavView, this.navHostFragment.navController);
 
+
+        this.setIdUsuario();
 
        /* var usuario: String? = intent.getStringExtra("usuario") ?: "";
         var email: String? = intent.getStringExtra("email") ?: "";
