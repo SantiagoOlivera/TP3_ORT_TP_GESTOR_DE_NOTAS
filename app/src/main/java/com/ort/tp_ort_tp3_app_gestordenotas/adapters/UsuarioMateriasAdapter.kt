@@ -110,7 +110,7 @@ class UsuarioMateriasAdapter(
     }
 
     override fun onBindViewHolder(holder: UsuarioMateriasHolder, position: Int) {
-        holder.setNombreCompleto(this.materias[position].getNombreMateria())
+        holder.setNombreCompleto(this.materias[position].getMateria().getNombre())
         holder.setNotaMateria(this.materias[position].getNota())
         holder.setEstadoMateria(this.materias[position].getEstado(), this.materias[position].getNota())
         /*holder.getCard().setOnClickListener{
