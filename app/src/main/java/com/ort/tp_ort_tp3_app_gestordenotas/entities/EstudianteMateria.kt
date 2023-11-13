@@ -2,17 +2,26 @@ package com.ort.tp_ort_tp3_app_gestordenotas.entities
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 @Parcelize
-class EstudianteMateria() : Parcelable {
+class EstudianteMateria(
+    var estudianteAux: Estudiante? = null,
+    var materiaAux: @RawValue Materia? = null,
+    var nombreMateriaAux: String? = "",
+    var estadoAux: EstadoMateria = EstadoMateria.PENDIENTE
+) : Parcelable {
 
+    private var listaParciales: MutableList<Parcial> = mutableListOf()
+    private var estudiante: Estudiante? = estudianteAux
+    private var materia: Materia? = materiaAux
+    private var nombreMateria: String? = nombreMateriaAux
+    private var estado: EstadoMateria = estadoAux
+    private var nota: Int = 0
     private lateinit var idPersona: String
     private lateinit var idMateria: String
-    private lateinit var estudiante: Estudiante
-    private lateinit var materia: Materia
-    private lateinit var estado: EstadoMateria
     private var isInscripto: Boolean = false;
-    private var nota: Int = 0;
+
 
     constructor(idPersona: String, idMateria: String, estado: EstadoMateria, nota: Int): this() {
         this.setIdPersona(idPersona);
@@ -35,15 +44,19 @@ class EstudianteMateria() : Parcelable {
         this.setNota(nota);
     }
 
+    fun getListaParciales(): MutableList<Parcial> {
+        return this.listaParciales
+    }
+
     fun getIsInscripto(): Boolean{
         return this.isInscripto;
     }
 
-    fun getMateria(): Materia{
+    fun getMateria(): Materia?{
         return this.materia;
     }
 
-    fun getEstudiante(): Estudiante{
+    fun getEstudiante(): Estudiante?{
         return this.estudiante;
     }
 

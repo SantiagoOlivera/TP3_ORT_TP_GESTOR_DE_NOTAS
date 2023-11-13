@@ -1,8 +1,12 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.factories
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -284,25 +288,47 @@ class Factory {
                 "nota" to 0
             );
 
-            this.db.collection("EstudianteMateria")
+           val refEm = this.db.collection("EstudianteMateria")
                 .add(em)
                 .await()
+
+            val estudianteMateriaId = refEm.id
+            val estudianteMateriaIdRef = this.db.collection("EstudianteMateria")
+                .document(estudianteMateriaId)
+
+            if(estudianteMateriaId != null) {
+                val notasParciales = estudianteMateriaIdRef.collection("Parciales")
+
+                val Parcial1 = hashMapOf(
+                    "numero" to 1,
+                    "notaParcial1" to 0
+                );
+                val Parcial2 = hashMapOf(
+                    "numero" to 2,
+                    "notaParcial2" to 0
+                );
+                val notaParcial1Ref = notasParciales.add(Parcial1)
+                val notaParcial2Ref = notasParciales.add(Parcial2)
+
+            }else {
+                Log.e("Factory", "Error al agregar collection parciales")
+            }
         }
     }
 
     suspend fun setEstudianteMateria(em: EstudianteMateria) {
 
         val data = hashMapOf(
-            "idPersona" to em.getEstudiante().getPersona().getIdPersona(),
-            "idMateria" to em.getMateria().getId(),
+            "idPersona" to em.getEstudiante()?.getPersona()?.getIdPersona(),
+            "idMateria" to em.getMateria()?.getId(),
             "estado" to em.getEstado().ordinal,
             "isInscripto" to em.getIsInscripto(),
             "nota" to em.getNota()
         );
 
         var document: QuerySnapshot? = this.db.collection("EstudianteMateria")
-            .whereEqualTo("idPersona", em.getEstudiante().getIdPersona())
-            .whereEqualTo("idMateria", em.getMateria().getId())
+            .whereEqualTo("idPersona", em.getEstudiante()?.getIdPersona())
+            .whereEqualTo("idMateria", em.getMateria()?.getId())
             .get()
             .await()
 
@@ -337,6 +363,50 @@ class Factory {
                 .set(materia)
                 .await()
         }
+    }
+
+    suspend fun setNotaParial(em: EstudianteMateria, nota: Int, nroParcial: Int){
+
+        val e = em.getEstudiante()
+        val idPers = e?.getPersona()?.getIdPersona()
+        val idMateria = em.getMateria()?.getId()
+
+        this.db.collection("EstudianteMateria")
+            .whereEqualTo("idPersona", idPers)
+            .whereEqualTo("idMateria", idMateria)
+            .get()
+            .addOnSuccessListener { document ->
+                for (result in document){
+                    val idEm = result.id
+
+                    val documentRef = db.collection("EstudianteMateria").document(idEm)
+                    val parcialesRef = documentRef.collection("Parciales")
+
+                    parcialesRef
+                        .whereEqualTo("numero", nroParcial)
+                        .get()
+                        .addOnSuccessListener { documentos ->
+                            for (p in documentos){
+                                val datos = p.data
+                                val pId = p.id
+
+                                val documetoRef = parcialesRef.document(pId)
+
+                                if(nroParcial == 1){
+                                    documetoRef.update("notaParcial1", nota)
+                                    Log.e("Factory", "Se cargo bien la nota")
+                                }else if (nroParcial == 2) {
+                                    documetoRef.update("notaParcial2", nota)
+                                    Log.e("Factory", "Se cargo bien la nota")
+                                }else {
+                                    Log.e("Factory", "Error al ingresar el nro del parcial")
+                                }
+
+
+                            }
+                        }
+                }
+            }
     }
 
 }
