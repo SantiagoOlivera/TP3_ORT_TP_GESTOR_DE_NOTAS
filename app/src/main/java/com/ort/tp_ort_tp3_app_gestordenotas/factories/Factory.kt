@@ -316,6 +316,37 @@ class Factory {
         }
     }
 
+    suspend fun setEstudianteMateria(em: EstudianteMateria) {
+
+        val data = hashMapOf(
+            "idPersona" to em.getEstudiante()?.getPersona()?.getIdPersona(),
+            "idMateria" to em.getMateria()?.getId(),
+            "estado" to em.getEstado().ordinal,
+            "isInscripto" to em.getIsInscripto(),
+            "nota" to em.getNota()
+        );
+
+        var document: QuerySnapshot? = this.db.collection("EstudianteMateria")
+            .whereEqualTo("idPersona", em.getEstudiante()?.getIdPersona())
+            .whereEqualTo("idMateria", em.getMateria()?.getId())
+            .get()
+            .await()
+
+        if(document != null){
+            if(!document.isEmpty){
+                if(document.documents[0].exists()) {
+
+                    var idDocument: String = document.documents[0].id;
+                    this.db.collection("EstudianteMateria")
+                        .document(idDocument)
+                        .set(data)
+                        .await()
+                }
+            }
+        }
+
+    }
+
     suspend fun setAllMaterias() {
         var data: MutableList<Materia> = UsuariosRepository.getMaterias();
         for(m in data) {

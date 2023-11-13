@@ -64,12 +64,24 @@
         <action
             android:id="@+id/action_estudianteMateriaFragment_to_parcialesEstudianteMateriaEditFragment"
             app:destination="@id/parcialesEstudianteMateriaEditFragment" />
+        <action
+            android:id="@+id/action_estudianteMateriaFragment_to_estudianteMateriaEditFragment"
+            app:destination="@id/estudianteMateriaEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/parcialesEstudianteMateriaEditFragment"
         android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria.ParcialesEstudianteMateriaEditFragment"
         android:label="fragment_parciales_estudiante_materia_edit"
         tools:layout="@layout/fragment_parciales_estudiante_materia_edit" >
+        <argument
+            android:name="estudianteMateria"
+            app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria" />
+    </fragment>
+    <fragment
+        android:id="@+id/estudianteMateriaEditFragment"
+        android:name="com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria.EstudianteMateriaEditFragment"
+        android:label="fragment_estudiante_materia_edit"
+        tools:layout="@layout/fragment_estudiante_materia_edit" >
         <argument
             android:name="estudianteMateria"
             app:argType="com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria" />

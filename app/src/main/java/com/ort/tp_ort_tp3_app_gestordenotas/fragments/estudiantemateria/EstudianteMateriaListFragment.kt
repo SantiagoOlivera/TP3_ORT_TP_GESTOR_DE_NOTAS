@@ -31,7 +31,7 @@ class EstudianteMateriaListFragment : Fragment() {
 
     private lateinit var v: View;
     private lateinit var viewModel: EstudianteMateriaListViewModel
-    private lateinit var adapter: UsuarioMateriasAdapter;
+    private lateinit var adapter: RecyclerView.Adapter<*>;
     private lateinit var usuario: Usuario;
     private lateinit var recycler: RecyclerView
     private lateinit var estudiante: Estudiante
@@ -69,7 +69,7 @@ class EstudianteMateriaListFragment : Fragment() {
         }
 
 
-        this.adapter = UsuarioMateriasAdapter(
+        /*this.adapter = UsuarioMateriasAdapter(
             listEstudianteMateria
         ) { i ->
             //Snackbar.make(v, "Click Estudiante Materia", Snackbar.LENGTH_LONG).show();
@@ -90,6 +90,41 @@ class EstudianteMateriaListFragment : Fragment() {
             };
         };
 
+        this.recycler.layoutManager = LinearLayoutManager(context);
+        this.recycler.adapter = this.adapter;*/
+
+        this.adapter = when (parentFragment) {
+            is EstudianteFragment -> {
+                UsuarioMateriasAdapter(listEstudianteMateria) {i ->
+                    val em: EstudianteMateria = listEstudianteMateria[i]
+                    val action = EstudianteFragmentDirections.actionEstudianteFragmentToEstudianteMateriaFragment(em);
+                    findNavController().navigate(action)
+                }
+            }
+
+            is TabsEstudianteMateriaListFragment -> {
+                EstudianteMateriaAdapter(listEstudianteMateria) {i ->
+                    val em: EstudianteMateria = listEstudianteMateria[i]
+                    val action = TabsEstudianteMateriaListFragmentDirections.actionTabsEstudianteMateriaListFragmentToEstudianteMateriaFragment(em);
+                    findNavController().navigate(action)
+                }
+            }
+
+            is UsuarioFragment -> {
+                EstudianteMateriaAdapter(listEstudianteMateria) {i ->
+                    val em: EstudianteMateria = listEstudianteMateria[i]
+                    val action = UsuarioFragmentDirections.actionUsuarioFragmentToEstudianteMateriaFragment(em);
+                    findNavController().navigate(action)
+                }
+            }
+            else -> {
+                UsuarioMateriasAdapter(listEstudianteMateria) {i ->
+                    val em: EstudianteMateria = listEstudianteMateria[i]
+                    val action = UsuarioFragmentDirections.actionUsuarioFragmentToEstudianteMateriaFragment(em);
+                    findNavController().navigate(action)
+                }
+            }
+        }
         this.recycler.layoutManager = LinearLayoutManager(context);
         this.recycler.adapter = this.adapter;
 

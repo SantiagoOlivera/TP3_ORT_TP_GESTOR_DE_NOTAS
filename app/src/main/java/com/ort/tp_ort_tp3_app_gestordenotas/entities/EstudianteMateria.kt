@@ -9,9 +9,8 @@ class EstudianteMateria(
     var estudianteAux: Estudiante? = null,
     var materiaAux: @RawValue Materia? = null,
     var nombreMateriaAux: String? = "",
-    var estadoAux: EstadoMateria = EstadoMateria.PENDIENTE,
+    var estadoAux: EstadoMateria = EstadoMateria.PENDIENTE
 ) : Parcelable {
-
 
     private var listaParciales: MutableList<Parcial> = mutableListOf()
     private var estudiante: Estudiante? = estudianteAux
@@ -31,15 +30,16 @@ class EstudianteMateria(
         this.setNota(nota);
     }
 
-    constructor(estudiante: Estudiante, materia: Materia, estado: EstadoMateria, nota: Int): this() {
+    constructor(estudiante: Estudiante, materia: Materia): this() {
         this.setEstudiante(estudiante);
         this.setMateria(materia);
         this.setEstado(EstadoMateria.PENDIENTE);
         this.setNota(0);
     }
 
-    constructor(nombreMateria: String, estado: EstadoMateria, nota: Int): this() {
-        this.setNombreMateria(nombreMateria)
+    constructor(e: Estudiante,m: Materia, estado: EstadoMateria, nota: Int): this() {
+        this.setEstudiante(e);
+        this.setMateria(m);
         this.setEstado(estado);
         this.setNota(nota);
     }
@@ -68,33 +68,34 @@ class EstudianteMateria(
         return this.estado;
     }
 
-    fun getNombreMateria(): String? {
-        return this.nombreMateria
-    }
-        private fun setIdMateria(idMateria: String) {
-            this.idMateria = idMateria;
-        }
-        private fun setIdPersona(idPersona: String) {
-            this.idPersona = idPersona;
-        }
-        private fun setNota(nota: Int) {
-            this.nota = nota;
-        }
-        private fun setEstado(estado: EstadoMateria) {
-            this.estado = estado;
-        }
-        private fun setMateria(materia: Materia) {
-            this.materia = materia;
-        }
-        private fun setEstudiante(estudiante: Estudiante) {
-            this.estudiante = estudiante;
-        }
-        private fun setNombreMateria(nombre: String) {
-            this.nombreMateria = nombre
-        }
-        fun setIsInscripto(isInscripto: Boolean) {
-            this.isInscripto = isInscripto;
-        }
-
+    private fun setIdMateria(idMateria: String){
+        this.idMateria = idMateria;
     }
 
+    private fun setIdPersona(idPersona: String){
+        this.idPersona = idPersona;
+    }
+
+    fun setNota(nota: Int){
+        this.nota = nota;
+    }
+
+    private fun setEstado(estado: EstadoMateria){
+        this.estado = estado;
+    }
+
+    private fun setMateria(materia: Materia){
+        this.materia = materia;
+    }
+    private fun setEstudiante(estudiante: Estudiante){
+        this.estudiante = estudiante;
+    }
+
+    fun setIsInscripto( isInscripto: Boolean ){
+        this.isInscripto = isInscripto;
+    }
+
+
+
+
+}

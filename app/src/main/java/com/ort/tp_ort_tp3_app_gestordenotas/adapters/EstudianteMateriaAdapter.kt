@@ -124,40 +124,44 @@ class EstudianteMateriaAdapter(
 
         val e = this.materias[position].getEstudiante()
         val idPers = e?.getPersona()?.getIdPersona()
+        val em: EstudianteMateria? = materias.find { it.getEstudiante()?.getPersona()?.getIdPersona() == idPers }
+        val materiaId = em?.getMateria()?.getId()
 
          db.collection("EstudianteMateria")
             .whereEqualTo("idPersona", idPers)
+             .whereEqualTo("idMateria", materiaId)
             .get()
              .addOnSuccessListener { documents ->
                  for (result in documents){
                      val idEm = result.id
 
-                     val documentRef = db.collection("EstudianteMateria").document(idEm)
-                     val parciales = documentRef.collection("Parciales")
+                     val em = result.data
 
-                     parciales
+                     val documentRef = db.collection("EstudianteMateria").document(idEm).collection("Parciales")
+
+                     documentRef
                          .get()
                          .addOnSuccessListener { documentos ->
-                             for (d in documentos){
+                             for (d in documentos) {
                                  val datos = d.data
 
-                                 val nota1 = datos["notaParcial1"].toString()?.toIntOrNull() ?: 0
-                                 val nota2 = datos["notaParcial2"].toString()?.toIntOrNull() ?: 0
+                                     val nota1 = datos["notaParcial1"].toString()?.toIntOrNull() ?: 0
+                                     val nota2 = datos["notaParcial2"].toString()?.toIntOrNull() ?: 0
 
-                                 Log.d("EstudianteMateriaAdapter", "datos: $datos, $nota1, $nota2")
+                                 Log.d("EstudianteMateriaAdapter", "nota 1: $nota1  nota 2: $nota2")
 
-                                 if(nota1 != null && nota2 != null) {
-                                     holder.itemView.setOnClickListener {
-                                         mostrarMenuEmergente(
-                                             holder.itemView.context,
-                                             holder.itemView,
-                                             nota1,
-                                             nota2
-                                         )
+                                     if (nota1 != null && nota2 != null) {
+                                         holder.itemView.setOnClickListener {
+                                             mostrarMenuEmergente(
+                                                 holder.itemView.context,
+                                                 holder.itemView,
+                                                 nota1,
+                                                 nota2
+                                             )
+                                         }
+                                     } else {
+                                         Log.e("EstudianteMateriaAdapter", "nota1/nota2 da nulo")
                                      }
-                                 }else {
-                                     Log.e("EstudianteMateriaAdapter", "nota1/nota2 da nulo")
-                                 }
                              }
                          }
                          .addOnFailureListener { e ->
