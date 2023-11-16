@@ -54,17 +54,19 @@ class EstudianteMateriaFragment : Fragment() {
         this.txtModificarEm.text = "Modificar nota final"
 
 
+        this.btnModificar.setOnClickListener {
+            var action =
+                EstudianteMateriaFragmentDirections.actionEstudianteMateriaFragmentToEstudianteMateriaEditFragment(this.em);
+            findNavController().navigate(action);
+
+        }
+
         this.btnModificarNotaParcial.setOnClickListener {
             var action =
                 EstudianteMateriaFragmentDirections.actionEstudianteMateriaFragmentToParcialesEstudianteMateriaEditFragment(this.em);
             findNavController().navigate(action)
 
-            this.btnModificar.setOnClickListener {
-                var action =
-                    EstudianteMateriaFragmentDirections.actionEstudianteMateriaFragmentToEstudianteMateriaEditFragment(this.em);
-                findNavController().navigate(action);
 
-            }
         }
 
     }
