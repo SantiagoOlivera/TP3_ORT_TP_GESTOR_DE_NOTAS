@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TPORTTP3AppGestorDeNotas"
         tools:targetApi="31">
+
         <activity
             android:name=".AdministradorActivity"
             android:exported="false" />
