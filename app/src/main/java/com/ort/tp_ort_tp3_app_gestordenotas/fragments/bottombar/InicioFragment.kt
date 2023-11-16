@@ -18,6 +18,8 @@ import com.ort.tp_ort_tp3_app_gestordenotas.EstudianteActivity
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.adapters.ViewPagerAdapter
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
+import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
+
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
 import java.io.File
@@ -95,12 +97,12 @@ class InicioFragment : Fragment() {
         //Inicia tabs data parametro para filtrar lista y titulo
         this.tabTitle = ArrayList<String>();
         this.tabData = ArrayList<String>();
-        this.tabTitle.add("Inscripto");
-        this.tabData.add("-1");
-        /*for(am in AnioMateria.entries){
+        //this.tabTitle.add("Inscripto");
+        //this.tabData.add("-1");
+        for(am in AnioMateria.entries){
             this.tabTitle.add(am.getText());
             this.tabData.add(am.ordinal.toString());
-        }*/ //comentado para que solo salgan los inscriptos
+        }
 
         this.adapterPager = ViewPagerAdapter(this, this.tabData, this.estudiante);
 
