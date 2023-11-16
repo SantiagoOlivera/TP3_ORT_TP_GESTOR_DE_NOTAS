@@ -1,5 +1,7 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.entities
 
+import android.util.Log
+
 class Estudiante : Usuario {
 
     private lateinit var materias: MutableList<EstudianteMateria>
@@ -44,11 +46,23 @@ class Estudiante : Usuario {
     }
 
     fun getNumeroMateriasInscriptas(): Int {
-        val cantidadMateriasInscriptas: Int = this.materias
+        return materias
             .filter { em -> em.getIsInscripto() }
-            .count()
+            .count();
+    }
 
-        return cantidadMateriasInscriptas;
+    fun getProgreso(): String {
+        var count = 0;
+        for(mat in this.materias){
+            val estado = mat.getEstado()
+            Log.d("DEBUG", "Estado de la materia: $estado")
+            if(mat.getNota() >= 4){
+                count++;
+            }
+        }
+        val cantidadMateriasTotales: Int = this.materias.count()
+
+        return "$count/$cantidadMateriasTotales"
     }
     private fun calcPromedio(){
         var prom: Double = this.getPromedioMaterias();
