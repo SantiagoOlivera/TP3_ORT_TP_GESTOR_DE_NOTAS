@@ -8,7 +8,26 @@
     android:layout_height="match_parent"
     android:layout_margin="15dp"
     tools:context=".fragments.estudiantes.AgregarEstudianteFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="148dp"
+        android:background="@drawable/fondo_inputs_container"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent">
 
+        <Button
+            android:id="@+id/btnAgregarEstudiante"
+            android:layout_width="800px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="300dp"
+            android:backgroundTint="@color/blue_700"
+            android:text="Agregar estudiante" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/inputDNI"
@@ -16,6 +35,8 @@
         android:layout_height="45dp"
         android:ems="10"
         android:hint="DNI"
+        android:paddingLeft="20dp"
+        android:background="@drawable/fondo_inputs_login"
         android:inputType="text"
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,6 +52,8 @@
         android:layout_height="45dp"
         android:ems="10"
         android:hint="Apellido"
+        android:paddingLeft="20dp"
+        android:background="@drawable/fondo_inputs_login"
         android:inputType="text"
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,6 +68,8 @@
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:ems="10"
+        android:paddingLeft="20dp"
+        android:background="@drawable/fondo_inputs_login"
         android:hint="Nombre"
         android:inputType="text"
         android:text=""
@@ -60,6 +85,8 @@
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:ems="10"
+        android:paddingLeft="20dp"
+        android:background="@drawable/fondo_inputs_login"
         android:hint="Password"
         android:inputType="textPassword"
         android:text=""
@@ -74,6 +101,8 @@
         android:id="@+id/inputFechaDeNacimiento"
         android:layout_width="0dp"
         android:layout_height="45dp"
+        android:paddingLeft="20dp"
+        android:background="@drawable/fondo_inputs_login"
         android:ems="10"
         android:hint="Fecha de nacimiento"
         android:inputType="date"
@@ -84,17 +113,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45" />
-
-    <Button
-        android:id="@+id/btnAgregarEstudiante"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Agregar estudiante"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.548" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
