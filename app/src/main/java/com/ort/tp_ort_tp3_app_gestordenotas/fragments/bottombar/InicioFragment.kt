@@ -74,8 +74,6 @@ class InicioFragment : Fragment() {
     }
 
 
-
-
     private fun getEstudiante() {
         viewModel.estudiante.observe(viewLifecycleOwner, Observer { e ->
             this.estudiante = e;
@@ -86,8 +84,6 @@ class InicioFragment : Fragment() {
 
 
     private fun initDataEstudiante(e: Estudiante){
-        //this.txtUsuario.text = e?.getUsuario();
-        //this.email.text = e?.getEmail();
         this.materiasInscriptas.text = e?.getNumeroMateriasInscriptas().toString();
         this.progreso.text = e?.getProgreso();
         this.nombreCompleto.text = e?.getPersona()?.getNombreCompleto();

@@ -115,10 +115,10 @@ class UsuarioFragment : Fragment() {
         this.tabData = ArrayList<String>();
         this.tabTitle.add("Inscripto");
         this.tabData.add("-1");
-        for(am in AnioMateria.entries){
+        /*for(am in AnioMateria.entries){
             this.tabTitle.add(am.getText());
             this.tabData.add(am.ordinal.toString());
-        }
+        }*/
 
         this.adapterPager = ViewPagerAdapter(this, this.tabData, this.estudiante);
 
