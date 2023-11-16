@@ -101,7 +101,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingRight="7dp"
-            android:text="Materias incriptas:"
+            android:text="Materias inscriptas:"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
