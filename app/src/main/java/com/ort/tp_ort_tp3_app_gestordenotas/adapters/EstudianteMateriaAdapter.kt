@@ -122,10 +122,12 @@ class EstudianteMateriaAdapter(
 
         val db = Firebase.firestore
 
+        val materia = this.materias[position]
+
         val e = this.materias[position].getEstudiante()
         val idPers = e?.getPersona()?.getIdPersona()
         val em: EstudianteMateria? = materias.find { it.getEstudiante()?.getPersona()?.getIdPersona() == idPers }
-        val materiaId = em?.getMateria()?.getId()
+        val materiaId = materia.getMateria()?.getId()
 
          db.collection("EstudianteMateria")
             .whereEqualTo("idPersona", idPers)
@@ -160,7 +162,7 @@ class EstudianteMateriaAdapter(
                                              )
                                          }
                                      } else {
-                                         Log.e("EstudianteMateriaAdapter", "nota1/nota2 da nulo")
+                                         Log.e("EstudianteMateriaAdapter", "nota1/nota2 da nulo o materia incorrecta")
                                      }
                              }
                          }
