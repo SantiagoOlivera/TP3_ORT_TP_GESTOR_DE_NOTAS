@@ -147,23 +147,21 @@ class EstudianteMateriaAdapter(
                              for (d in documentos) {
                                  val datos = d.data
 
-                                     val nota1 = datos["notaParcial1"].toString()?.toIntOrNull() ?: 0
-                                     val nota2 = datos["notaParcial2"].toString()?.toIntOrNull() ?: 0
+                                 val nota1 = datos["notaParcial1"].toString()?.toIntOrNull() ?: 0
+                                 val nota2 = datos["notaParcial2"].toString()?.toIntOrNull() ?: 0
 
                                  Log.d("EstudianteMateriaAdapter", "nota 1: $nota1  nota 2: $nota2")
 
-                                     if (nota1 != null && nota2 != null) {
-                                         holder.itemView.setOnClickListener {
-                                             mostrarMenuEmergente(
-                                                 holder.itemView.context,
-                                                 holder.itemView,
-                                                 nota1,
-                                                 nota2
-                                             )
-                                         }
-                                     } else {
-                                         Log.e("EstudianteMateriaAdapter", "nota1/nota2 da nulo o materia incorrecta")
+                                 if (nota1 != null && nota2 != null) {
+                                     holder.itemView.setOnClickListener {
+                                         mostrarMenuEmergente(
+                                             holder.itemView.context,
+                                             holder.itemView,
+                                             nota1,
+                                             nota2
+                                         )
                                      }
+                                 }
                              }
                          }
                          .addOnFailureListener { e ->
