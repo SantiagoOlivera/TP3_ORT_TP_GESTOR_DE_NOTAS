@@ -57,8 +57,8 @@ class EstudianteMateriaEditFragment : Fragment() {
     }
 
     private fun initData(em: EstudianteMateria) {
-        this.txtNombreMateria.text = "Materia seleccionada: ${em.getMateria().getNombre()}, Estudiante: ${em.getEstudiante().getPersona().getNombreCompleto()}, Nota: ${em.getNota()}";
-        this.txtNombreEstudiante.text = em.getEstudiante().getPersona().getNombreCompleto();
+        this.txtNombreMateria.text = "Materia seleccionada: ${em.getMateria()?.getNombre()}, Estudiante: ${em.getEstudiante()?.getPersona()?.getNombreCompleto()}, Nota: ${em.getNota()}";
+        this.txtNombreEstudiante.text = em.getEstudiante()?.getPersona()?.getNombreCompleto();
         this.inputNota.setText(em.getNota().toString());
         this.btnGuardar.setOnClickListener{
             this.guardar();
