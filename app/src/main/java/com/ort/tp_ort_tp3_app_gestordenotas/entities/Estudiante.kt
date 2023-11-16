@@ -4,7 +4,7 @@ class Estudiante : Usuario {
 
     private lateinit var materias: MutableList<EstudianteMateria>
     private var promedioMaterias: Double = 0.0
-
+    private var materiasInscriptas: Int = 0
 
     constructor(
         usuario: String,
@@ -43,6 +43,13 @@ class Estudiante : Usuario {
         return ret;
     }
 
+    fun getNumeroMateriasInscriptas(): Int {
+        val cantidadMateriasInscriptas: Int = this.materias
+            .filter { em -> em.getIsInscripto() }
+            .count()
+
+        return cantidadMateriasInscriptas;
+    }
     private fun calcPromedio(){
         var prom: Double = this.getPromedioMaterias();
         this.setPromedioMaterias(prom);
