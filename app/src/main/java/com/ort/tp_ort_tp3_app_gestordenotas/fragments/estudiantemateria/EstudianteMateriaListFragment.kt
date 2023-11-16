@@ -17,6 +17,7 @@ import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Estudiante
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.Usuario
+import com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.InicioFragment
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.UsuarioFragment
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.bottombar.UsuarioFragmentDirections
 import com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantes.EstudianteFragment
@@ -115,6 +116,13 @@ class EstudianteMateriaListFragment : Fragment() {
                     val em: EstudianteMateria = listEstudianteMateria[i]
                     val action = UsuarioFragmentDirections.actionUsuarioFragmentToEstudianteMateriaFragment(em);
                     findNavController().navigate(action)
+                }
+            }
+            is InicioFragment -> {
+                EstudianteMateriaAdapter(listEstudianteMateria) {i ->
+                    //val em: EstudianteMateria = listEstudianteMateria[i]
+                    //val action = UsuarioFragmentDirections.actionUsuarioFragmentToEstudianteMateriaFragment(em);
+                    //findNavController().navigate(action)
                 }
             }
             else -> {

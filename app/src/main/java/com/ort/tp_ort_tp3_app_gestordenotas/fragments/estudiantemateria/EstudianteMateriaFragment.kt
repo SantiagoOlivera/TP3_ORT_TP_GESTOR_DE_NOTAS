@@ -1,6 +1,7 @@
 package com.ort.tp_ort_tp3_app_gestordenotas.fragments.estudiantemateria
 
 
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import com.ort.tp_ort_tp3_app_gestordenotas.AdministradorActivity
 import com.ort.tp_ort_tp3_app_gestordenotas.R
 import com.ort.tp_ort_tp3_app_gestordenotas.entities.EstudianteMateria
 
@@ -64,10 +66,18 @@ class EstudianteMateriaFragment : Fragment() {
         this.btnModificarNotaParcial.setOnClickListener {
             var action =
                 EstudianteMateriaFragmentDirections.actionEstudianteMateriaFragmentToParcialesEstudianteMateriaEditFragment(this.em);
-            findNavController().navigate(action)
-
-
+            findNavController().navigate(action);
         }
+
+
+        this.btnModificar.visibility = View.INVISIBLE;
+        this.btnModificarNotaParcial.visibility = View.INVISIBLE;
+        if(parentFragment?.activity is AdministradorActivity){
+            this.btnModificar.visibility = View.VISIBLE;
+            this.btnModificarNotaParcial.visibility = View.VISIBLE;
+        }
+
+
 
     }
 
