@@ -22,6 +22,7 @@ import com.ort.tp_ort_tp3_app_gestordenotas.entities.AnioMateria
 
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
+import org.w3c.dom.Text
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -36,6 +37,7 @@ class InicioFragment : Fragment() {
     private lateinit var tabTitle: ArrayList<String>;
     private lateinit var tabData: ArrayList<String>;
     private lateinit var adapterPager: ViewPagerAdapter;
+    private lateinit var progreso: TextView;
 
     companion object {
         fun newInstance() = InicioFragment()
@@ -45,6 +47,7 @@ class InicioFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         v = inflater.inflate(R.layout.fragment_inicio, container, false);
+        progreso = v.findViewById(R.id.txtMateriasRestantes)
         materiasInscriptas = v.findViewById(R.id.txtMateriasInscriptas)
         nombreCompleto = v.findViewById(R.id.nombreCompleto);
 
@@ -86,6 +89,7 @@ class InicioFragment : Fragment() {
         //this.txtUsuario.text = e?.getUsuario();
         //this.email.text = e?.getEmail();
         this.materiasInscriptas.text = e?.getNumeroMateriasInscriptas().toString();
+        this.progreso.text = e?.getProgreso();
         this.nombreCompleto.text = e?.getPersona()?.getNombreCompleto();
         //this.dni.text = e?.getPersona()?.getDNI();
     }

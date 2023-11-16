@@ -152,7 +152,6 @@ class Factory {
                     if(m != null) {
                         var em: EstudianteMateria = EstudianteMateria(e, m, estado, nota );
                         em.setIsInscripto(isInscripto);
-
                         ret.agregarEstudianteMateria(em);
                     }
                 }

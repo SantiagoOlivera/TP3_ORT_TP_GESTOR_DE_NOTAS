@@ -50,7 +50,7 @@ class UsuarioMateriasAdapter(
                 text = "EN PROGRESO";
                 color = Color.LTGRAY;
             } else if(nota >= 7){
-                //estado == EstadoMateria.APROBADA
+                estado == EstadoMateria.APROBADA
                 text = "APROBADA";
                 color = Color.GREEN;
             } else if(nota >= 4 && nota < 7){

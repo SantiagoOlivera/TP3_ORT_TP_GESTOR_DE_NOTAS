@@ -80,7 +80,7 @@ class EstudianteMateria(
         this.nota = nota;
     }
 
-    private fun setEstado(estado: EstadoMateria){
+     fun setEstado(estado: EstadoMateria){
         this.estado = estado;
     }
 
