@@ -36,6 +36,7 @@ class Persona {
         this.setNombre(nombre);
         this.setApellido(apellido);
         this.setFechaDeNacimiento(fechaDeNacimiento);
+        this.setIdPersona("");
     }
 
     fun getNombreCompleto(): String{
